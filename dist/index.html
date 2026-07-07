@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>大疆中国商城 & 哈苏商城 · Q2 投放复盘 · 腾讯广告数码家电</title>
+<meta name="viewport" content="width=1280">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root{
+    --brand:#1a56db; --brand-2:#2563eb; --brand-soft:#eaf1ff;
+    --ok:#0f766e; --ok-soft:#e6fffb;
+    --warn:#b45309; --warn-soft:#fff7ed;
+    --bad:#b91c1c; --bad-soft:#fee2e2;
+    --ink:#0f172a; --ink-2:#334155; --muted:#64748b;
+    --line:#e2e8f0; --bg:#f8fbff; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    font-size:14px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:24px 28px 60px}
+  .mono{font-variant-numeric:tabular-nums}
+
+  .hero{background:linear-gradient(135deg,#1a56db 0%,#0ea5e9 100%);color:#fff;
+    border-radius:14px;padding:28px 32px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:280px;height:280px;
+    background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)}
+  .hero .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:4px 12px;border-radius:20px;font-size:12px;letter-spacing:.5px}
+  .hero h1{margin:10px 0 4px;font-size:26px;font-weight:700;letter-spacing:.5px}
+  .hero .sub{opacity:.92;font-size:13px;line-height:1.7}
+  .hero .meta{margin-top:14px;display:flex;gap:24px;font-size:12px;opacity:.85;flex-wrap:wrap}
+  .hero .meta span::before{content:"·";margin-right:6px;opacity:.6}
+  .hero .meta span:first-child::before{content:""}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:-24px;
+    position:relative;z-index:2;padding:0 8px}
+  .kpi{background:#fff;border-radius:12px;padding:18px;
+    box-shadow:0 4px 18px rgba(15,23,42,.06);border-top:3px solid var(--brand)}
+  .kpi .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .kpi .v{font-size:24px;font-weight:700;color:var(--ink);line-height:1.1}
+  .kpi .v small{font-size:12px;color:var(--muted);font-weight:500;margin-left:4px}
+  .kpi .d{margin-top:6px;font-size:12px;color:var(--ok);font-weight:600}
+  .kpi .d.warn{color:var(--warn)}
+  .kpi .d.bad{color:var(--bad)}
+  .kpi.gold{border-top-color:#f59e0b}
+  .kpi.gold .v{color:#b45309}
+
+  section{margin-top:34px}
+  .sec-title{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;
+    border-left:4px solid var(--brand);padding-left:12px}
+  .sec-title .n{font-size:12px;color:#fff;background:var(--brand);
+    padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.5px}
+  .sec-title h2{margin:0;font-size:19px;font-weight:700;color:var(--ink)}
+  .sec-title .sub{color:var(--muted);font-size:13px;margin-left:auto}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .card-h b{font-size:14px}
+  .card-h .hint{font-size:12px;color:var(--muted)}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#f1f5ff;color:var(--ink-2);font-weight:600;font-size:12px}
+  tbody tr:hover{background:#fafcff}
+  .num{font-family:"SF Mono","Menlo",monospace;font-variant-numeric:tabular-nums}
+  .up{color:var(--bad);font-weight:600}
+  .down{color:var(--ok);font-weight:600}
+  .neu{color:var(--muted)}
+  tr.hl-row td{background:#eef4ff}
+  tr.hl-row td:first-child{box-shadow:inset 3px 0 0 var(--brand)}
+
+  /* ROI 三色 */
+  .roi-hi{color:var(--ok);font-weight:700}      /* ≥30 绿 */
+  .roi-mid{color:var(--brand);font-weight:600}  /* 12-30 蓝 */
+  .roi-low{color:var(--bad);font-weight:700}    /* <12 红 */
+
+  /* 整体 by 月表 分组行 */
+  tr.cn-total td{background:#eef4ff;font-weight:700}
+  tr.cn-total td:first-child{box-shadow:inset 3px 0 0 var(--brand)}
+  tr.hs-total td{background:#fff7ed;font-weight:700}
+  tr.hs-total td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+  tr.sub-row td:first-child{padding-left:26px;color:var(--muted);font-weight:500}
+  .col-ytd{background:#f8fafc}
+  tr.cn-total td.col-ytd,tr.hs-total td.col-ytd{background:#e0ebff}
+  tr.hs-total td.col-ytd{background:#ffe9cc}
+  .prd-sub{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:2px}
+
+  /* 宽表滚动 */
+  .tbl-scroll{overflow-x:auto;margin-top:6px}
+  .tbl-scroll table{min-width:760px}
+
+  .chart-box{position:relative;height:300px;padding:8px 0 0}
+  .chart-box.short{height:240px}
+
+  .callout{background:var(--brand-soft);border-left:3px solid var(--brand);
+    padding:12px 16px;border-radius:8px;margin-top:12px;font-size:13px;line-height:1.75}
+  .callout.ok{background:var(--ok-soft);border-color:var(--ok)}
+  .callout.warn{background:var(--warn-soft);border-color:var(--warn)}
+  .callout.bad{background:var(--bad-soft);border-color:var(--bad)}
+  .callout.gold{background:#fff9e6;border-color:#f59e0b}
+  .callout b{color:var(--ink)}
+  ul.bullets{margin:8px 0 0;padding-left:20px}
+  ul.bullets li{margin:4px 0}
+  .sugg{color:var(--ok);font-style:normal;font-weight:600}
+  .sugg::before{content:"↳ 建议：";color:var(--warn);font-weight:700}
+
+  .highlight-callout{background:linear-gradient(180deg,#fff9d6 0%,#fff3a8 100%);
+    border-left:4px solid #f59e0b;padding:12px 16px;border-radius:8px;
+    margin-top:12px;font-size:13.5px;line-height:1.75}
+  .highlight-callout b{color:#78350f}
+
+  .hlmark{background:linear-gradient(180deg,rgba(251,191,36,.35) 0%,rgba(251,191,36,.18) 100%);
+    padding:1px 4px;border-radius:3px;font-weight:600;color:#78350f}
+  .hlblue{background:linear-gradient(180deg,rgba(59,130,246,.2) 0%,rgba(59,130,246,.1) 100%);
+    padding:1px 4px;border-radius:3px;font-weight:600;color:#1e40af}
+
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;
+    background:var(--brand-soft);color:var(--brand);font-weight:600;margin-right:6px}
+  .badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .badge.bad{background:var(--bad-soft);color:var(--bad)}
+  .badge.gold{background:#fef3c7;color:#b45309}
+
+  /* 产品卡（竞价3.0 / 全域通） */
+  .prod-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .prod-card{background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;display:flex;flex-direction:column;gap:12px;border-top:3px solid var(--brand)}
+  .prod-card.gold{border-top-color:#f59e0b}
+  .prod-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px;
+    background:var(--brand-soft);color:var(--brand);align-self:flex-start}
+  .prod-tag.gold{background:#fef3c7;color:#b45309}
+  .prod-name{font-size:18px;font-weight:800;color:var(--ink);margin-top:-4px}
+  .prod-en{font-size:11px;color:var(--muted);letter-spacing:1.5px;margin-top:-8px}
+  .prod-meta{font-size:12.5px;color:var(--ink-2);line-height:1.65}
+  .prod-meta b{color:var(--brand)}
+  .fld{margin-bottom:2px}
+  .fld-k{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+  .fld-k .ic{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+  .ic-i{background:var(--brand-soft);color:var(--brand)}
+  .ic-ok{background:var(--ok-soft);color:var(--ok)}
+  .ic-warn{background:var(--warn-soft);color:var(--warn)}
+  .ic-pos{background:#ede9fe;color:#7c3aed}
+  .ic-fit{background:#e0f2fe;color:#0369a1}
+  .fld p{font-size:12.5px;color:var(--ink-2);padding-left:26px;line-height:1.65;margin:0}
+  .fld ul{margin:0;padding-left:42px;font-size:12.5px;color:var(--ink-2);line-height:1.7}
+  .fld ul li{margin:3px 0}
+  .fld ul li b{color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;padding-left:26px}
+  .chip{font-size:12px;padding:3px 10px;border-radius:18px;background:#f1f5ff;border:1px solid var(--line);color:var(--ink-2)}
+  .chip.big{background:var(--brand-soft);color:var(--brand);border-color:#c7d8ff;font-weight:700}
+  .chip.big.gold{background:#fef3c7;color:#b45309;border-color:#fde68a}
+
+  /* 投放模式表 */
+  .mode-table th{background:#f1f5ff}
+  .mode-table th.hot{color:#b45309;background:#fff7ed}
+  .mode-table th.old{color:var(--ok);background:#e6fffb}
+  .mode-table td.rowh{color:var(--ink);font-weight:700;white-space:nowrap}
+  .mode-table td.hotcol{background:#fffdf5}
+  .mk{background:#fef3c7;color:#b45309;padding:1px 6px;border-radius:4px;font-weight:600;font-size:12px}
+  .mkb{background:var(--brand-soft);color:var(--brand);padding:1px 6px;border-radius:4px;font-weight:600;font-size:12px}
+  .flag{font-size:10px;background:#f59e0b;color:#fff;padding:1px 6px;border-radius:4px;margin-left:5px;font-weight:700}
+
+  /* 流量来源 折叠 */
+  details.flow{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  details.flow>summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:14px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:10px}
+  details.flow>summary::-webkit-details-marker{display:none}
+  details.flow>summary:hover{background:#fafcff}
+  details.flow>summary .bar{width:4px;height:16px;background:var(--brand-2);border-radius:2px}
+  details.flow>summary .tip{margin-left:auto;font-size:12px;color:var(--brand);font-weight:600}
+  .flow-body{padding:0 18px 18px}
+  .flow-l1{display:flex;gap:8px;margin:6px 0 8px}
+  .flow-seg{border-radius:8px;padding:12px;color:#fff;position:relative}
+  .flow-seg .pn{font-size:13px;font-weight:700}
+  .flow-seg .pp{font-size:22px;font-weight:900;margin-top:2px}
+  .seg-wx{background:linear-gradient(135deg,#1a56db,#0ea5e9);flex:70}
+  .seg-pc{background:linear-gradient(135deg,#7c3aed,#5b21b6);flex:15}
+  .seg-yl{background:linear-gradient(135deg,#0f766e,#0d9488);flex:10}
+  .flow-l2{display:flex;gap:8px;margin-bottom:10px}
+  .flow-sub{border-radius:7px;padding:10px;color:#fff;font-size:12px}
+  .flow-sub .sn{font-weight:700}
+  .flow-sub .sp{font-size:16px;font-weight:900;margin-top:2px}
+  .sub-sph{background:#f59e0b;flex:82;box-shadow:0 3px 10px rgba(245,158,11,.3)}
+  .sub-pyq{background:#fbbf24;flex:5;min-width:70px;color:#7c2d12}
+  .sub-gzh{background:#fde68a;flex:3;min-width:84px;color:#7c2d12}
+
+  /* Part 子标题 */
+  .part-head{display:flex;align-items:center;gap:12px;margin:30px 0 12px}
+  .part-head .ptag{font-size:12px;font-weight:800;letter-spacing:1px;padding:4px 12px;border-radius:8px}
+  .ptag-cn{background:var(--brand-soft);color:var(--brand);border:1px solid #c7d8ff}
+  .ptag-hs{background:#fef3c7;color:#b45309;border:1px solid #fde68a}
+  .part-head h3{margin:0;font-size:18px;font-weight:800;color:var(--ink)}
+  .part-head .period{margin-left:auto;font-size:12px;color:var(--muted)}
+
+  /* 子 KPI 条 */
+  .sub-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+  .sub-kpi .sk{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;border-left:3px solid var(--brand)}
+  .sub-kpi .sk.gold{border-left-color:#f59e0b}
+  .sub-kpi .sk .sk-k{font-size:11.5px;color:var(--muted)}
+  .sub-kpi .sk .sk-v{font-size:19px;font-weight:800;color:var(--ink);margin-top:3px}
+  .sub-kpi .sk .sk-v small{font-size:11px;color:var(--muted);font-weight:500;margin-left:3px}
+  .sub-kpi .sk .sk-d{font-size:11px;color:var(--muted);margin-top:3px}
+
+  /* 素材形式进度条 */
+  .mat-list{margin:8px 0 4px;display:flex;flex-direction:column;gap:7px}
+  .mat-row{display:flex;align-items:center;gap:10px;font-size:12.5px}
+  .mat-name{width:130px;color:var(--ink-2);flex-shrink:0}
+  .mat-bar{flex:1;height:8px;background:#f1f5ff;border-radius:6px;overflow:hidden}
+  .mat-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),#0ea5e9);border-radius:6px}
+  .mat-pct{width:44px;text-align:right;color:var(--warn);font-weight:700;flex-shrink:0;font-family:monospace}
+
+  /* SOP 二维码占位 */
+  .sop-box{display:flex;align-items:center;gap:14px;background:#f1f5ff;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin-top:10px}
+  .sop-qr{width:64px;height:64px;border-radius:8px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--muted);flex-shrink:0}
+  .sop-txt{flex:1}
+  .sop-title{font-size:13px;font-weight:700;color:var(--ink)}
+  .sop-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+  /* 未来方向 grid */
+  .direction-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+  .direction-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+    position:relative;border-top:3px solid var(--brand)}
+  .direction-card .n{font-size:11px;color:var(--brand);font-weight:700;letter-spacing:1px}
+  .direction-card h4{margin:6px 0 10px;font-size:15.5px}
+  .direction-card p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.75}
+  .direction-card p b{color:var(--ink)}
+  .direction-card .tag2{display:inline-block;font-size:11.5px;color:var(--ok);border:1px solid #a7f3d0;background:var(--ok-soft);padding:3px 10px;border-radius:18px;margin-top:12px}
+
+  footer{margin-top:36px;color:var(--muted);font-size:12px;text-align:center;line-height:1.8}
+  footer b{color:var(--ink-2)}
+
+  /* 素材抽帧分析 · 卡片网格 */
+  .frame-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+  .frame-card{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+    display:flex;flex-direction:column;transition:box-shadow .2s;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+  .frame-card:hover{box-shadow:0 8px 22px rgba(15,23,42,.1)}
+  .frame-card.hi{border-top:3px solid var(--ok)}
+  .frame-card.mid{border-top:3px solid var(--brand)}
+  .frame-card.low{border-top:3px solid var(--bad)}
+  .frame-card.pool-card{border-top:3px solid var(--warn)}
+  .fc-head{padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fafcff;border-bottom:1px solid var(--line)}
+  .fc-rank{font-size:11px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:5px;background:var(--brand);color:#fff}
+  .fc-rank.pool{background:var(--warn)}
+  .fc-metric{font-size:11.5px;color:var(--muted);font-family:"SF Mono",monospace}
+  .fc-metric b{color:var(--ink);font-weight:700}
+  .fc-img{background:#0f172a;aspect-ratio:.87;overflow:hidden}
+  .fc-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .fc-body{padding:10px 12px;font-size:12px;color:var(--ink-2);line-height:1.6;flex:1;display:flex;flex-direction:column;gap:6px}
+  .fc-body .tag-row{display:flex;flex-wrap:wrap;gap:4px}
+  .fc-tag{font-size:10.5px;padding:1px 7px;border-radius:10px;background:var(--brand-soft);color:var(--brand);font-weight:600;line-height:1.5}
+  .fc-tag.ok{background:var(--ok-soft);color:var(--ok)}
+  .fc-tag.warn{background:var(--warn-soft);color:var(--warn)}
+  .fc-tag.bad{background:var(--bad-soft);color:var(--bad)}
+  .fc-tag.neu{background:#f1f5ff;color:var(--ink-2)}
+  .fc-txt{color:var(--ink-2);font-size:12px}
+  .fc-txt b{color:var(--ink)}
+
+  /* 抽帧汇总的结构对比 */
+  .struct-cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  .struct-col{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .struct-col.dj{border-top:3px solid var(--brand)}
+  .struct-col.pool{border-top:3px solid var(--warn)}
+  .struct-col h5{margin:0 0 10px;font-size:14px;font-weight:800}
+  .struct-row{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:6px 0;font-size:12.5px;line-height:1.6;border-bottom:1px dashed var(--line)}
+  .struct-row:last-child{border-bottom:none}
+  .struct-row .sk-l{font-weight:700;color:var(--ink);font-size:12px}
+  .struct-row .sk-r{color:var(--ink-2)}
+  .struct-row .sk-r b{color:var(--ink)}
+
+  .part-banner{margin:50px 0 26px;background:linear-gradient(135deg,#1a56db 0%,#0ea5e9 100%);
+    border-radius:14px;padding:22px 28px;color:#fff;display:flex;align-items:center;gap:20px;
+    position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(26,86,219,.18)}
+  .part-banner::after{content:"";position:absolute;right:-40px;top:-40px;width:240px;height:240px;
+    background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%)}
+  .part-banner .pb-num{font-size:40px;font-weight:900;opacity:.92;line-height:1;letter-spacing:1px}
+  .part-banner .pb-txt{position:relative;z-index:1}
+  .part-banner .pb-txt h2{margin:0;font-size:20px;font-weight:800;letter-spacing:.5px}
+  .part-banner .pb-txt p{margin:4px 0 0;font-size:12.5px;opacity:.92;line-height:1.6}
+  .part-banner.gold{background:linear-gradient(135deg,#b45309 0%,#f59e0b 100%);
+    box-shadow:0 8px 28px rgba(180,83,9,.18)}
+  .part-banner.gold .pb-num{opacity:.95}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="tag">数码家电 · 品牌电商 · 双链路复盘</span>
+    <h1>大疆 Q2 投放复盘 · 小程序直购 &amp; 小店闭环</h1>
+    <div class="sub">小程序直购：中国商城日耗约 <b>1.7</b> 万 / 下单 ROI 26.2 / 付费 ROI 12.7 · 哈苏商城日耗约 <b>800</b> 元 / 下单 ROI 62.8 ｜ 小店闭环：6 月日耗 <b>3,495</b> 元 / 下单 ROI 21.9 —— 双链路盘点、ROI 优化建议、素材抽帧分析</div>
+    <div class="meta">
+      <span>周期：中国商城 2026.04.01–06.30 ｜ 哈苏商城 2026.05.19–07.03 ｜ 小店闭环 2026.05–06</span>
+      <span>链路：小程序直购 + 小店闭环 ADQ</span>
+      <span>投放体系：腾讯广告 ADQ</span>
+    </div>
+  </div>
+
+  <!-- KPI 行 -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="k">中国商城 · Q2 日耗</div>
+      <div class="v">1.7<small>万元/日</small></div>
+      <div class="d">4-6 月合计 · 月均 52 万</div>
+    </div>
+    <div class="kpi">
+      <div class="k">中国商城 · 下单 ROI</div>
+      <div class="v">26.2</div>
+      <div class="d">付费 ROI 12.7（有流失空间）</div>
+    </div>
+    <div class="kpi gold">
+      <div class="k">哈苏商城 · 下单 ROI</div>
+      <div class="v">62.8</div>
+      <div class="d warn">高客单精品 · 6 月达 77.1</div>
+    </div>
+    <div class="kpi">
+      <div class="k">哈苏商城 · 日耗</div>
+      <div class="v">800<small>元/日</small></div>
+      <div class="d warn">量级小但 ROI 极高</div>
+    </div>
+    <div class="kpi">
+      <div class="k">小店闭环 · 下单 ROI</div>
+      <div class="v">21.9</div>
+      <div class="d ok">6 月数据 · 视频号版位领先（ROI 23.4）</div>
+    </div>
+  </div>
+
+  <!-- ===== 引入：产品及流量来源介绍 ===== -->
+  <section>
+    <div class="sec-title">
+      <h2>引入：产品及流量来源介绍 · 适配流量</h2>
+      <span class="sub">ADQ 投放两大核心产品 · 微信生态全域触点</span>
+    </div>
+
+    <!-- 两个产品卡 -->
+    <div class="prod-cards">
+      <!-- 竞价 3.0 -->
+      <div class="prod-card">
+        <span class="prod-tag">效果投放主力</span>
+        <div>
+          <div class="prod-name">3.0 竞价广告</div>
+          <div class="prod-en">AUCTION ADS 3.0</div>
+        </div>
+        <div class="prod-meta">定位：<b>专业化投放工具（类"千川"）</b> · 入口：腾讯广告投放端 · 支持对公 / 服务商开户</div>
+
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-i">i</span>产品介绍</div>
+          <p>腾讯广告新一代竞价投放产品，采用<span class="hlmark">"一键起量 + 智能出价 + 自动化投放"</span>架构。设定优化目标与出价后，系统基于全域流量与算法能力自动完成人群探索、版位分配与流量竞争，实现从冷启动到规模化放量的高效投放。</p>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-ok">✓</span>核心优势</div>
+          <ul>
+            <li><b>算法能力强</b>，冷启动快、跑量稳，快速找到高潜人群</li>
+            <li>支持多种优化目标，可按<b>下单、付费等深层目标</b>优化</li>
+            <li>有 DMP 可复用、中控台等专业化投放产品</li>
+            <li><span class="hlmark">全域流量打通，一套广告触达微信 + 腾讯系 + 优量汇</span></li>
+          </ul>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-warn">!</span>需要关注</div>
+          <ul>
+            <li>前期投入较大，需定方向、放开预算充分探索；<b>放量后效果越来越好，单客户日耗可冲 250w+</b></li>
+            <li>有操作门槛，一般需服务商代投，自身学习成本较高</li>
+            <li><span class="hlmark">依赖充足转化数据与素材基建喂养模型</span>，冷启动期保持预算与出价稳定</li>
+            <li>深层目标（付费）需做好下单 + 付费 API 回传</li>
+          </ul>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-pos">▦</span>覆盖版位</div>
+          <div class="chips">
+            <span class="chip big">视频号</span>
+            <span class="chip">朋友圈</span>
+            <span class="chip">公众号 / 小程序</span>
+            <span class="chip">PCAD</span>
+            <span class="chip">优量汇</span>
+          </div>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-fit">◎</span>适配客户</div>
+          <p>有明确转化目标、具备素材产能与投放预算、追求 ROI 与规模化放量的品牌电商客户 —— <span class="hlblue">与大疆当前小程序直购链路高度契合</span>。</p>
+        </div>
+      </div>
+
+      <!-- 全域通 -->
+      <div class="prod-card gold">
+        <span class="prod-tag gold">小店经营必备</span>
+        <div>
+          <div class="prod-name">全域通</div>
+          <div class="prod-en">QUAN YU TONG · ALL-DOMAIN AUTO</div>
+        </div>
+        <div class="prod-meta">定位：<b>小店后台极简版 3.0</b> · 入口：微信小店后台 · 无需开户 / 无需服务商代投</div>
+
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-i">i</span>产品介绍</div>
+          <p>面向微信小店经营场景的一站式自动化投放工具，是<b>小店经营必备工具</b>。可直接推广商品，<span class="hlmark">系统自动完成人群、版位、创意的全域智能分发</span>，操作极简、上手快。</p>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-ok">✓</span>核心优势</div>
+          <ul>
+            <li><b>CPA 扣费（无转化不扣费）</b>，避免无效点击或展示带来的成本浪费</li>
+            <li><b>投放成本可控</b>，ROI 心里有数，经营风险更低</li>
+            <li>操作简单，一键即可推广商品</li>
+            <li><b>约 70% 客户投放后能产生成交转化</b></li>
+          </ul>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-warn">!</span>需要关注</div>
+          <ul>
+            <li>CPA 计费模式下，投放中<b>可能出现超成本消耗</b>，需关注成本波动</li>
+            <li>自动化程度高、手动干预空间较小，精细化定向不及竞价广告</li>
+            <li>更适合作为常态化"打底"投放；重点大促建议搭配竞价广告 3.0</li>
+            <li><b style="color:var(--ok)">正向</b>：约 70% 客户投放后产生成交转化，起步风险低</li>
+          </ul>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-pos">▦</span>覆盖版位</div>
+          <div class="chips">
+            <span class="chip big gold">微信全域</span>
+            <span class="chip">视频号</span>
+            <span class="chip">朋友圈</span>
+            <span class="chip">小店 / 小程序</span>
+            <span class="chip">搜一搜</span>
+          </div>
+        </div>
+        <div class="fld">
+          <div class="fld-k"><span class="ic ic-fit">◎</span>适配客户</div>
+          <p>开通微信小店、以商品为核心经营阵地、希望以低门槛低风险获取全域流量的商家 —— <span class="hlblue">适合大疆日常常态化经营与新品低成本放量</span>。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 微信生态全景图 -->
+    <div class="card" style="margin-top:14px">
+      <div class="card-h">
+        <b>ADQ 投放 · 微信生态全域触点</b>
+        <span class="hint">14 亿+ MAU · 9 大场景全覆盖</span>
+      </div>
+      <img src="mat_frames/wechat_ecosystem.jpg" alt="微信生态全景" style="width:100%;border-radius:8px;margin-top:8px">
+      <div style="font-size:12.5px;color:var(--ink-2);line-height:1.75;margin-top:10px">
+        大疆投放<b>核心聚焦微信生态内优化</b>——从<span class="hlmark">社交（微信 14 亿 MAU）</span>、<span class="hlmark">浏览（朋友圈 7 亿 DAU）</span>、阅读（公众号 3 亿 DAU）、<span class="hlmark">观看（视频号 8 亿 MAU）</span>、搜索（搜一搜 8 亿 MAU）到交易（小程序 GMV +10%、小店 GMV ×1.92 倍），覆盖用户全链路行为。<span class="sugg">重点深耕视频号 + 朋友圈 + 搜一搜三大高转化版位，以微信生态内流量闭环为主阵地。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PART 1 BANNER ===== -->
+  <div class="part-banner">
+    <div class="pb-num">01</div>
+    <div class="pb-txt">
+      <h2>Part 1 · 大疆中国商城 & 哈苏商城 · Q2 投放复盘</h2>
+      <p>小程序直购链路 · 中国商城 2026.04.01-06.30 · 哈苏商城 2026.05.19-07.03 · 数据复盘（分品线 / 分版位 / 分优化目标）+ 投放优化建议</p>
+    </div>
+  </div>
+
+  <!-- ========== 02 数据复盘 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">02</span><h2>投放数据复盘：中国商城 & 哈苏商城</h2>
+      <span class="sub">分商城 · 分品线 · 分版位 · 分优化目标</span>
+    </div>
+
+    <!-- 投放模式表 -->
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-h">
+        <b>品牌客户小程序直购链路 · 投放模式及重点 Tips</b>
+        <span class="hint">大疆未来其他品线投放，重点参考「新客转化」模式</span>
+      </div>
+      <div class="tbl-scroll">
+        <table class="mode-table">
+          <thead>
+            <tr>
+              <th style="width:120px;text-align:left">投放模式</th>
+              <th class="hot">🔥 新客转化<span class="flag">重点</span></th>
+              <th class="old">♻ 以旧换新</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="rowh">🎯 选品</td><td class="hotcol"><span class="mk">尖货热卖品</span> + 搭配其他</td><td>新品（清洁电器为主）</td></tr>
+            <tr><td class="rowh">👥 人群</td><td class="hotcol">CPC：<span class="mk">高精度一方人群（app + 线下 + 小程序高潜）</span>；下单 + 付费回传</td><td>CPC：已购人群</td></tr>
+            <tr><td class="rowh">📈 优化目标</td><td class="hotcol">Step1 CPC → Step2 下单 → Step3 付费</td><td>CPC</td></tr>
+            <tr><td class="rowh">🔁 回传</td><td class="hotcol">CPC 平台归因；下单 + 付费 <span class="mk">API 回传</span></td><td>CPC 平台归因</td></tr>
+            <tr><td class="rowh">📄 落地页</td><td class="hotcol">商品聚合页（普遍）/ 详情页（明确推 X）</td><td>企业微信 → 小程序 → 下单</td></tr>
+            <tr><td class="rowh">⚡ CVR 提升</td><td class="hotcol">小程序分期付款 · 下单-付费流失约 <span class="mkb">50%</span></td><td>—</td></tr>
+            <tr><td class="rowh">💰 大盘 ROI</td><td class="hotcol">大疆 付费 <span class="mkb">5.6+</span> / 下单 <span class="mkb">15+</span> · CASETiFY 付费 4.5+</td><td>5 - 10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 整体 by 月表 -->
+    <div class="card">
+      <div class="card-h">
+        <b>整体 by 月消耗表现：中国商城 & 哈苏商城</b>
+        <span class="hint">消耗(万) · 下单ROI · 付费ROI · CTR · 浅层CVR · 有消耗广告数 · 有消耗创意数 · 新建创意指纹数</span>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align:left;width:130px">商城 / 月份</th>
+              <th>消耗<br><span style="font-weight:400;font-size:10px;color:var(--muted)">万元</span></th>
+              <th>下单<br>ROI</th>
+              <th>付费<br>ROI</th>
+              <th>CTR<br><span style="font-weight:400;font-size:10px;color:var(--muted)">%</span></th>
+              <th>浅层CVR<br><span style="font-weight:400;font-size:10px;color:var(--muted)">%</span></th>
+              <th>有消耗<br>广告数</th>
+              <th>有消耗<br>创意数</th>
+              <th>新建创意<br>指纹数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cn-total"><td>中国商城 · 整体<span class="prd-sub">2026.4.1–6.30</span></td><td class="col-ytd">156.05</td><td class="col-ytd roi-mid">26.2</td><td class="col-ytd roi-mid">12.7</td><td class="col-ytd">2.12</td><td class="col-ytd">1.12</td><td class="col-ytd">31</td><td class="col-ytd">7787</td><td class="col-ytd">1145</td></tr>
+            <tr class="sub-row"><td>2026/04</td><td>51.94</td><td class="roi-mid">42.7</td><td class="roi-hi">23.4</td><td>1.75</td><td>1.39</td><td>23</td><td>2649</td><td>462</td></tr>
+            <tr class="sub-row"><td>2026/05</td><td>62.26</td><td class="roi-mid">17.0</td><td class="roi-low">6.9</td><td>1.97</td><td>1.52</td><td>18</td><td>2309</td><td>328</td></tr>
+            <tr class="sub-row"><td>2026/06</td><td>41.85</td><td class="roi-mid">19.5</td><td class="roi-low">7.8</td><td>3.13</td><td>0.35</td><td>14</td><td>2829</td><td>355</td></tr>
+            <tr class="hs-total"><td>哈苏商城 · 整体<span class="prd-sub">2026.5.19–7.03</span></td><td class="col-ytd">3.68</td><td class="col-ytd roi-hi">62.8</td><td class="col-ytd roi-hi">25.0</td><td class="col-ytd">2.74</td><td class="col-ytd">5.15</td><td class="col-ytd">5</td><td class="col-ytd">1243</td><td class="col-ytd">280</td></tr>
+            <tr class="sub-row"><td>2026/05</td><td>0.74</td><td>15.8</td><td class="roi-low">5.5</td><td>2.28</td><td>7.16</td><td>3</td><td>232</td><td>91</td></tr>
+            <tr class="sub-row"><td>2026/06</td><td>2.76</td><td class="roi-hi">77.1</td><td class="roi-hi">30.6</td><td>2.91</td><td>4.82</td><td>5</td><td>907</td><td>187</td></tr>
+            <tr class="sub-row"><td>2026/07</td><td>0.18</td><td class="roi-mid">36.6</td><td class="roi-mid">18.9</td><td>2.23</td><td>1.18</td><td>3</td><td>104</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <b>整体表现 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>中国商城：</b>Q2 累计消耗 <b>156.05 万</b>、整体下单 ROI <b>26.2</b>、付费 ROI <b>12.7</b>。4 月受 Osmo Pocket 4 新品发售带动，下单 / 付费 ROI 高达 42.7 / 23.4（整季高点），5-6 月放量后回落至下单 17-19.5、付费 6.9-7.8 的规模化区间，创意规模累计 <b>7787</b>。<span class="sugg"><span class="hlmark">可注重扩展版位提量级，同时补齐付费链路收窄下单与付费 ROI 差距。</span></span></li>
+          <li><b>哈苏商城：</b>量级小但 ROI 极高，6 月下单 ROI 高达 <b>77.1</b>、付费 ROI <b>30.6</b>，浅层 CVR（4.8-7.2%）显著高于中国商城（1.1% 左右），高客单精品转化质量突出。<span class="sugg"><span class="hlmark">需注重素材基建量的提升，沉淀高转化素材反哺影像品线。</span></span></li>
+          <li><b>对比洞察：</b>中国商城胜在<b>规模</b>（156 万 vs 3.7 万），哈苏胜在 <b>ROI 与浅层 CVR</b>；两商城下单→付费均有约 5-6 成流失空间。<span class="sugg"><span class="hlblue">后续中国商城侧重扩展版位放量，哈苏侧重素材基建扩量。</span></span></li>
+        </ul>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:8px">※ 复盘周期：中国商城 2026.4.1–6.30；哈苏商城 2026.5.19–7.03（含 7 月初，量级较小）。</div>
+      </div>
+    </div>
+
+    <!-- ===== PART A 中国商城 ===== -->
+    <div class="part-head">
+      <span class="ptag ptag-cn">PART A</span>
+      <h3>大疆中国商城</h3>
+      <span class="period">复盘周期：2026.04.01 — 2026.06.30</span>
+    </div>
+
+    <div class="sub-kpi">
+      <div class="sk"><div class="sk-k">累计消耗</div><div class="sk-v mono">156.1<small>万元</small></div><div class="sk-d">Q2 4-6 月合计</div></div>
+      <div class="sk"><div class="sk-k">整体下单 ROI</div><div class="sk-v mono">26.2</div><div class="sk-d">下单金额 / 消耗</div></div>
+      <div class="sk"><div class="sk-k">主力品类占比</div><div class="sk-v mono">45.6<small>%</small></div><div class="sk-d">手持影像 / 运动相机</div></div>
+      <div class="sk"><div class="sk-k">搜一搜峰值 ROI</div><div class="sk-v mono">59.3</div><div class="sk-d">4 月 · 搜索版位</div></div>
+    </div>
+
+    <!-- A1 分品线 -->
+    <div class="card">
+      <div class="card-h">
+        <b>（1）分品线：按商品 × 月份 消耗、下单 ROI 与付费 ROI</b>
+        <span class="hint">2026.4-6 分品线明细（消耗单位：万元）· Q2 合计 156.05 万 · 下单 ROI 26.2 / 付费 ROI 12.7</span>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2" style="text-align:left">品线</th>
+              <th colspan="3" class="col-ytd">Q2 累计</th>
+              <th colspan="3">2026/04</th>
+              <th colspan="3">2026/05</th>
+              <th colspan="3">2026/06</th>
+            </tr>
+            <tr>
+              <th class="col-ytd">消耗</th><th class="col-ytd">下单</th><th class="col-ytd">付费</th>
+              <th>消耗</th><th>下单</th><th>付费</th>
+              <th>消耗</th><th>下单</th><th>付费</th>
+              <th>消耗</th><th>下单</th><th>付费</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="font-weight:700;color:var(--ink)">Pocket</td><td class="col-ytd">36.67</td><td class="col-ytd roi-low">18.2</td><td class="col-ytd roi-low">6.6</td><td class="neu">—</td><td class="neu">—</td><td class="neu">—</td><td>18.31</td><td>17.1</td><td>5.8</td><td>18.35</td><td>19.3</td><td>7.5</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">大飞机</td><td class="col-ytd">25.98</td><td class="col-ytd roi-mid">18.6</td><td class="col-ytd roi-low">9.3</td><td>14.51</td><td>21.6</td><td>11.2</td><td>7.83</td><td>12.6</td><td>5.9</td><td>3.64</td><td>19.6</td><td>8.9</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">Action</td><td class="col-ytd">23.96</td><td class="col-ytd roi-hi">32.8</td><td class="col-ytd roi-mid">16.5</td><td>8.48</td><td class="roi-hi">59.0</td><td>32.9</td><td>7.57</td><td>15.5</td><td>6.2</td><td>7.91</td><td>21.5</td><td>9.0</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">麦克风</td><td class="col-ytd">15.36</td><td class="col-ytd roi-hi">38.0</td><td class="col-ytd roi-mid">19.4</td><td>5.93</td><td class="roi-hi">54.8</td><td>30.6</td><td>6.26</td><td>32.6</td><td>15.6</td><td>3.18</td><td>17.4</td><td>5.8</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">小飞机</td><td class="col-ytd">15.28</td><td class="col-ytd roi-hi">28.3</td><td class="col-ytd roi-mid">14.6</td><td>6.44</td><td class="roi-hi">43.5</td><td>25.0</td><td>4.32</td><td>15.9</td><td>6.7</td><td>4.51</td><td>18.5</td><td>7.2</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">扫地机</td><td class="col-ytd">10.31</td><td class="col-ytd roi-hi">29.0</td><td class="col-ytd roi-mid">16.4</td><td>4.30</td><td class="roi-hi">53.7</td><td>31.7</td><td>4.51</td><td class="roi-low">5.1</td><td>1.8</td><td>1.50</td><td>30.1</td><td>16.1</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">power 户外电源</td><td class="col-ytd">7.34</td><td class="col-ytd roi-mid">23.5</td><td class="col-ytd roi-mid">11.6</td><td>2.58</td><td>42.7</td><td>22.9</td><td>3.91</td><td>13.9</td><td>6.0</td><td>0.85</td><td class="roi-low">9.7</td><td>3.3</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">nano 模块相机</td><td class="col-ytd">6.49</td><td class="col-ytd roi-hi">51.2</td><td class="col-ytd roi-mid">28.2</td><td>1.74</td><td class="roi-hi">150.7</td><td>86.8</td><td>4.43</td><td>14.6</td><td>6.9</td><td>0.32</td><td>19.3</td><td>7.0</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">手机云台</td><td class="col-ytd">6.22</td><td class="col-ytd roi-mid">18.9</td><td class="col-ytd roi-low">7.3</td><td>3.41</td><td>20.5</td><td>8.5</td><td>1.96</td><td>21.8</td><td>7.7</td><td>0.85</td><td class="roi-low">5.9</td><td>1.8</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">360</td><td class="col-ytd">4.48</td><td class="col-ytd roi-hi">30.9</td><td class="col-ytd roi-mid">13.4</td><td>2.21</td><td>32.3</td><td>16.2</td><td>2.08</td><td>27.3</td><td>10.3</td><td>0.19</td><td class="roi-hi">54.8</td><td>15.4</td></tr>
+            <tr><td style="font-weight:700;color:var(--ink)">相机云台 RS</td><td class="col-ytd">3.97</td><td class="col-ytd roi-mid">16.1</td><td class="col-ytd roi-low">6.6</td><td>2.34</td><td>17.8</td><td>6.6</td><td>1.08</td><td>15.0</td><td>7.7</td><td>0.55</td><td>11.1</td><td>4.2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:10px 0 2px">
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ok);margin-right:5px"></span>ROI ≥ 30（表现优）</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--brand);margin-right:5px"></span>12 ≤ ROI &lt; 30（达标）</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--bad);margin-right:5px"></span>ROI &lt; 12（需关注）</span>
+      </div>
+      <div class="callout">
+        <b>分品线复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>① 在投数量持续增多：</b>在投品线由 4 月 <b>10</b> 个增至 5/6 月 <b>11</b> 个（5 月起 Pocket 加入放量），投放覆盖面持续扩大。<span class="sugg"><span class="hlmark">延续"广铺品线、快速试跑"，新品上架同步开量测试。</span></span></li>
+          <li><b>② 跑量分化：OP 系列与无人机系列消耗表现最好</b> —— OP 系列（Pocket）Q2 消耗 <b>36.67 万</b>，单品线第一（5/6 月各约 18 万稳定放量）；无人机系列（大飞机 25.98 万 + 小飞机 15.28 万）合计 <b>41.25 万</b>，系列消耗居首，其中大飞机 4 月单月即达 14.51 万。Action（23.96 万）紧随其后。跑量较弱的为相机云台（3.97 万）、360（4.48 万）、手机云台（6.22 万）。<span class="sugg"><span class="hlmark">OP 与无人机系列作为核心预算盘稳定放量，小量品线诊断素材与承接后再决定加减。</span></span></li>
+          <li><b>③ 下单 ROI 达成：</b>Q2 累计口径下<b>各品线下单 ROI 均 &gt; 12</b>，nano（51.2）、麦克风（38.0）、Action（32.8）、360（30.9）表现最优；分月看仅个别月份出现低点（扫地机 5 月 5.1、手机云台 6 月 5.9、power 6 月 9.7）。<span class="sugg"><span class="hlmark">对出现单月低点的品线，叠加"下单 ROI"深度优化目标控质。</span></span></li>
+          <li><b>④ 付费 ROI 达成：</b><b>Pocket（6.6）、相机云台（6.6）、手机云台（7.3）、大飞机（9.3）</b>的 Q2 付费 ROI 偏低（&lt;10），下单到付费流失明显；nano（28.2）、麦克风（19.4）、Action（16.5）、扫地机（16.4）相对稳健。<span class="sugg"><span class="hlmark">低付费 ROI 品线（尤其 OP 与大飞机）重点补分期付款与支付引导，压降下单→付费流失。</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- A2 分版位 -->
+    <div class="card" style="margin-top:14px">
+      <div class="card-h">
+        <b>（2）分版位：朋友圈 vs 搜一搜</b>
+        <span class="badge gold">占比最大：搜一搜 52.8%</span>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">按月消耗（万元）与 ROI（实线下单 / 虚线付费）· 中国商城主投朋友圈 + 搜一搜双版位</div>
+      <div class="chart-box"><canvas id="cnPlace"></canvas></div>
+      <div class="callout">
+        <b>分版位复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>双版位并重、搜一搜略高：</b>搜一搜累计消耗 <b>82.3 万</b>（52.8%）、朋友圈 73.6 万（47.2%），形成"搜索承接 + 朋友圈拉新"结构。<span class="sugg"><span class="hlmark">维持双版位配比，把搜一搜作为高意向承接主阵地。</span></span></li>
+          <li><b>搜一搜是高 ROI 引擎：</b>下单 ROI 长期领先（4 月高达 <b>59.3</b>，CTR 约 30%），承接高意向搜索流量，转化效率突出。<span class="sugg"><span class="hlmark">拓词 + 提高搜一搜预算上限，抢占高转化搜索流量。</span></span></li>
+          <li><b>朋友圈稳量拉新：</b>ROI 在 <b>11.6-18.0</b> 区间，CPM 低、人群覆盖全。<span class="sugg"><span class="hlmark">加大朋友圈定投 + 优选跑量素材形式，做大拉新入口。</span></span></li>
+          <li class="sugg"><b>可扩展视频号版位：</b>当前中国商城投放以朋友圈 + 搜索为主，视频号版位尚未规模化覆盖。参考小店闭环数据（视频号 ROI 23.4 高出朋友圈 38%），建议中国商城逐步增加视频号版位测试，复用已验证的高 ROI 视频素材。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- A3 优化目标 -->
+    <div class="card" style="margin-top:14px">
+      <div class="card-h">
+        <b>（3）综合优化目标对比：付费 vs 下单</b>
+        <span class="badge">占比最大：付费 68.6%</span>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">按优化目标拆分消耗与 ROI · 中国商城 Q2 · 消耗合计 155.69 万元</div>
+      <div class="grid-2" style="grid-template-columns:.9fr 1.1fr">
+        <div class="chart-box short"><canvas id="cnObjDough"></canvas></div>
+        <div class="tbl-scroll" style="margin-top:0">
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align:left;width:110px">优化目标</th>
+                <th>消耗<br><span style="font-weight:400;font-size:10px;color:var(--muted)">万元</span></th>
+                <th>消耗<br>占比</th>
+                <th>下单<br>ROI</th>
+                <th>付费<br>ROI</th>
+                <th>浅层<br>CVR%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hl-row"><td>付费</td><td class="col-ytd">106.83</td><td class="col-ytd">68.6%</td><td class="col-ytd roi-mid">28.5</td><td class="col-ytd">13.67</td><td class="col-ytd">0.54</td></tr>
+              <tr><td>下单</td><td class="col-ytd">48.87</td><td class="col-ytd">31.4%</td><td class="col-ytd roi-mid">21.4</td><td class="col-ytd">10.56</td><td class="col-ytd">1.30</td></tr>
+              <tr style="background:#f8fafc;font-weight:700"><td>合计 / 均值</td><td>155.69</td><td>100%</td><td class="roi-mid">26.3</td><td>12.69</td><td>0.71</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="callout">
+        <b>综合优化目标复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>消耗集中在付费、下单目标：</b>当前投放<b>集中消耗在「付费」（68.6%）与「下单」（31.4%）两个优化目标</b>，付费目标下单 ROI 28.5、付费 ROI 13.67 更优，下单目标浅层 CVR（1.30%）更高、跑量承接更宽。</li>
+          <li><b>结构健康、以质为先：</b>付费为主的结构保证了转化质量与后端价值，下单为辅兼顾了流量规模，整体大盘下单 ROI 稳定在 26 左右。</li>
+          <li><b>提量方向明确：</b><span class="sugg"><span class="hlmark">如需进一步提量，可在付费 + 下单基础上，增加「下单 ROI」优化目标投放 —— 在放量的同时锁定 ROI 底线，稳步扩大规模而不牺牲转化质量。</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== PART B 哈苏商城 ===== -->
+    <div class="part-head">
+      <span class="ptag ptag-hs">PART B</span>
+      <h3>哈苏商城 HASSELBLAD</h3>
+      <span class="period">复盘周期：2026.05.19 — 2026.07.03</span>
+    </div>
+
+    <div class="sub-kpi">
+      <div class="sk gold"><div class="sk-k">累计消耗</div><div class="sk-v mono">3.67<small>万元</small></div><div class="sk-d">分版位口径</div></div>
+      <div class="sk gold"><div class="sk-k">整体下单 ROI</div><div class="sk-v mono">62.8</div><div class="sk-d">高客单 · 高 ROI</div></div>
+      <div class="sk gold"><div class="sk-k">朋友圈占比</div><div class="sk-v mono">93.6<small>%</small></div><div class="sk-d">高占比</div></div>
+      <div class="sk gold"><div class="sk-k">整体浅层 CVR</div><div class="sk-v mono">5.15<small>%</small></div><div class="sk-d">高于中国商城</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">
+        <b>分版位：朋友圈 vs 搜一搜</b>
+        <span class="badge gold">占比最大：朋友圈 93.6%</span>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">按月消耗（万元）与 ROI（实线下单 / 虚线付费）· 哈苏为高客单精品，整体量级小、ROI 高</div>
+      <div class="chart-box"><canvas id="hsPlace"></canvas></div>
+      <div class="callout gold">
+        <b>哈苏商城复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>朋友圈高度集中：</b>消耗占比 <b>93.6%</b>，6 月单月消耗 2.54 万、下单 ROI 高达 <b>66.8</b>，是核心放量与盈利版位。<span class="sugg" style="color:var(--warn)"><b>⚠ 但朋友圈基建严重不足：Q2 累计创意仅 280 个（中国商城 7787 的 3.6%），素材量过少制约持续放量能力。需优先补齐朋友圈素材基建量。</b></span></li>
+          <li><b>搜一搜需重点扩词投放：</b>当前量级极小（占比约 6%），6 月小量测试 ROI 亮眼。<span class="sugg"><b>建议将搜一搜从"补充渠道"升级为"重点扩量方向"—— 在品牌词基础上扩展品类词（中画幅相机/数码后背）、场景词（商业摄影/风光摄影）、竞品对比词（哈苏 vs 飞思/徕卡），利用高 ROI 特性做增量转化。</b></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 03 中国商城 & 哈苏商城 · 投放优化建议 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">03</span><h2>中国商城 & 哈苏商城 · 投放优化建议</h2>
+      <span class="sub">基建 · 优化目标 · 支付链路 · 版位拓展 · 搜索扩词</span>
+    </div>
+
+    <div style="font-size:13px;color:var(--ink-2);line-height:1.75;margin-bottom:12px">
+      围绕<b>下单 ROI 与付费 ROI</b>的提升，从基建提升、优化目标搭配、支付链路补齐、视频号版位加码、搜索扩词投放五个方向给出可落地的优化建议。
+    </div>
+
+    <div class="direction-grid">
+      <div class="direction-card" style="border-top-color:var(--brand)">
+        <div class="n">01</div>
+        <h4>基建提升 & 朋友圈定投 · 扩创意多样性</h4>
+        <p>通过<b>素材基建提升 + 朋友圈定投</b>，增加优质流量入口。<b>多扩展更多创意方向和素材形式</b>，避免单一样式审美疲劳，持续测试新风格以挖掘高转化潜力。</p>
+        <div class="mat-list">
+          <div class="mat-row"><span class="mat-name">单图 800×800</span><span class="mat-bar"><i style="width:100%"></i></span><span class="mat-pct">21.9%</span></div>
+          <div class="mat-row"><span class="mat-name">橱窗广告</span><span class="mat-bar"><i style="width:90.4%"></i></span><span class="mat-pct">19.8%</span></div>
+          <div class="mat-row"><span class="mat-name">常规九图</span><span class="mat-bar"><i style="width:68.9%"></i></span><span class="mat-pct">15.1%</span></div>
+          <div class="mat-row"><span class="mat-name">卡片-横版大图</span><span class="mat-bar"><i style="width:49.3%"></i></span><span class="mat-pct">10.8%</span></div>
+          <div class="mat-row"><span class="mat-name">9:16 竖版大图</span><span class="mat-bar"><i style="width:40.6%"></i></span><span class="mat-pct">8.9%</span></div>
+        </div>
+        <span class="tag2">现有跑量形式参考 · 多元化扩创意</span>
+      </div>
+
+      <div class="direction-card" style="border-top-color:var(--warn)">
+        <div class="n" style="color:var(--warn)">02</div>
+        <h4>搭配优化目标：下单 ROI</h4>
+        <p>在<b>下单目标基础上，叠加"下单 ROI"作为深度优化目标</b>，让系统在放量的同时卡住转化质量，兼顾规模与效率，稳住大盘 ROI 表现。</p>
+        <p style="margin-top:10px">重点应用于 <b>power / Pocket3 / 手机云台</b> 等下单 ROI 偏弱品线，以及付费 ROI &lt; 5 的大飞机 / 360 / Action。</p>
+        <span class="tag2" style="color:var(--warn);border-color:#fde68a;background:#fff7ed">下单 + 下单 ROI 深度优化</span>
+      </div>
+
+      <div class="direction-card" style="border-top-color:var(--ok)">
+        <div class="n" style="color:var(--ok)">03</div>
+        <h4>小程序增加分期付款</h4>
+        <p>当前小程序<b>下单-付费环节流失率约 50%</b>，是转化链路的关键漏点。增加<b>分期付款</b>可降低支付门槛，提升下单→付费转化率，直接拉升付费 ROI。</p>
+        <div class="sop-box">
+          <div class="sop-qr">📋</div>
+          <div class="sop-txt">
+            <div class="sop-title">分期付款接入指引 SOP</div>
+            <div class="sop-sub">扫码 / 查看开通 · 配置流程</div>
+          </div>
+        </div>
+        <span class="tag2">降流失 · 提付费 CVR</span>
+      </div>
+
+      <div class="direction-card" style="border-top-color:#8b5cf6">
+        <div class="n" style="color:#8b5cf6">04</div>
+        <h4>增投视频号版位 · 复用小店高 ROI 素材</h4>
+        <p>视频号版位<b>ROI 显著优于朋友圈</b>（小店闭环数据：视频号 ROI 23.4 vs 朋友圈 17.0，高出约 38%），且用户停留时长更深、互动率更高。</p>
+        <p style="margin-top:10px"><b>素材复用策略：</b>可直接将 Part 2 小店闭环中已验证的高 ROI 视频素材（"价格锚点+权益清单+场景样片"三段式模板）适配到中国商城/哈苏商城的视频号投放中，<b>跨品线复用降本增效</b>。同时针对视频号竖屏场景新增原生短视频创意。</p>
+        <span class="tag2" style="color:#8b5cf6;border-color:#ddd6fe;background:#f5f3ff">参考 Part 2 小店素材 · 视频号加码</span>
+      </div>
+
+      <div class="direction-card" style="border-top-color:var(--ok)">
+        <div class="n" style="color:var(--ok)">05</div>
+        <h4>搜索扩关键词投放 · 拓词提量</h4>
+        <p>搜一搜是中国商城<b>ROI 最高的版位</b>（4 月下单 ROI 高达 <b>59.3</b>，Q2 整体领先朋友圈），当前以品牌词 / 品类词为主，搜索流量承接效率突出。</p>
+        <p style="margin-top:10px"><b>扩词方向：</b>在现有品牌词（DJI/大疆/Osmo/Pocket/Mavic）和品类词（无人机/运动相机/手持云台）基础上，扩展竞品对比词（"大疆vs某某"）、场景需求词（"旅行航拍/骑行拍摄/直播设备"）、问题解决词（"防抖相机推荐/Vlog设备"），抢占高意向搜索流量。</p>
+        <p style="margin-top:10px"><span class="sugg">逐步提高搜一搜预算上限，拓词 + 提价并行，作为高转化增量渠道重点运营。</span></p>
+        <span class="tag2">搜一搜扩词 · 高 ROI 增量</span>
+      </div>
+    </div>
+
+    <div class="highlight-callout" style="margin-top:14px">
+      <b>🎯 五条优化建议 · 量化目标：</b>
+      <ul class="bullets" style="margin:6px 0 0">
+        <li><b>基建：</b>朋友圈定投在现有跑量形式基础上<b>多扩展更多创意方向</b>，扩大优质流量入口、避免单一样式疲劳；</li>
+        <li><b>优化目标：</b>低付费 ROI 品线（Pocket / 大飞机 / 手机云台 / 相机云台）叠加"下单 ROI"深度目标，压住 ROI 底线再放量；</li>
+        <li><b>支付链路：</b>小程序分期付款上线，目标把下单→付费流失从 50% 向 35-40% 靠拢，直接抬升付费 ROI；</li>
+        <li><b>版位拓展：</b>增投视频号版位，复用 Part 2 小店高 ROI 三段式素材模板，目标视频号消耗占比从当前低位向 20-30% 靠拢；</li>
+        <li><b>搜索放量：</b>搜一搜扩关键词投放（品牌词→品类词→场景词→竞品词），利用高 ROI 优势做增量转化。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== PART 2 BANNER ===== -->
+  <div class="part-banner gold">
+    <div class="pb-num">02</div>
+    <div class="pb-txt">
+      <h2>Part 2 · 大疆小店闭环部分复盘</h2>
+      <p>ADQ 投放 · 2026.05-06 · by 月 / 智投类型 / 分版位 / 优化目标 / 人群画像 / 视频素材调优</p>
+    </div>
+  </div>
+
+  <!-- ========== 03 by月数据 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">04</span><h2>by 月数据表现：量级持续优化提升</h2>
+      <span class="sub">2026.05 → 2026.06</span>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <b>大疆小店 ADQ · by 月核心指标</b>
+        <span class="hint">日均口径</span>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr><th style="text-align:left;width:200px">指标</th><th>2026/05</th><th>2026/06</th><th>环比</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>日均消耗（元）</td><td>1,804</td><td class="col-ytd">3,495</td><td class="up">+93.8%</td></tr>
+            <tr><td>日均下单金额（元）</td><td>26,731</td><td class="col-ytd">76,450</td><td class="up">+186.0%</td></tr>
+            <tr><td>下单 ROI</td><td>14.8</td><td class="col-ytd roi-mid">21.9</td><td class="up">+47.7%</td></tr>
+            <tr><td>目标出价（元）</td><td>123.1</td><td class="col-ytd">139.1</td><td class="up">+13.0%</td></tr>
+            <tr><td>CTR（%）</td><td>1.98</td><td class="col-ytd">1.41</td><td class="down">-28.6%</td></tr>
+            <tr><td>浅层 CVR（%）</td><td>7.50</td><td class="col-ytd">1.05</td><td class="down">-86.0%</td></tr>
+            <tr><td>有消耗创意指纹数</td><td>1,433</td><td class="col-ytd">716</td><td class="down">-50.0%</td></tr>
+            <tr><td>日均新建创意指纹</td><td>100.6</td><td class="col-ytd">40.3</td><td class="down">-59.9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <b>by 月复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>量级持续优化提升：</b>6 月日均消耗 <b>3,495 元</b>（较 5 月 +93.8% 近翻倍），日均下单金额 <b>7.65 万</b>（+186%），下单 ROI 从 <b>14.8 提升至 21.9</b>（+47.7%）—— 量价齐升、效率同步优化。</li>
+          <li><b>量级放大后浅层指标自然稀释：</b>浅层 CVR 从 7.50% 降至 1.05%、CTR 1.98%→1.41%，属规模化放量后的正常稀释，但下单 ROI 逆势提升说明放量质量可控。</li>
+          <li><b>创意集中度提升：</b>有消耗创意指纹从 1,433 降至 716（-50%）、日均新建从 100 降至 40，说明开始<b>集中优质素材、收敛基建</b>，跑量向头部素材聚拢。</li>
+          <li><b>转化效率向好：</b>CTR 稳定、下单 ROI 逆势提升，承接效率持续优化。<span class="sugg"><span class="hlmark">延续放量节奏，重点补浅层 CVR（素材前 3 秒 + 落地页承接）与下单率（商品点击→下单转化）。</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 智投类型 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">05</span><h2>智投类型：以 ADQ 非智投为主，可增加全域通投放</h2>
+      <span class="sub">非智投 vs 单链路智投</span>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <b>广告智投类型拆分</b>
+        <span class="hint">日均口径 · 全周期</span>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr><th style="text-align:left">智投类型</th><th>日均消耗(元)</th><th>消耗占比</th><th>日均下单(元)</th><th>下单ROI</th><th>CTR(%)</th><th>浅层CVR(%)</th><th>有消耗创意</th></tr>
+          </thead>
+          <tbody>
+            <tr class="hl-row"><td>非智投广告</td><td class="col-ytd">1,754.3</td><td class="col-ytd">99.29%</td><td>34,309</td><td class="roi-mid">19.6</td><td>1.62</td><td>3.93</td><td>1,970</td></tr>
+            <tr><td>单链路智投</td><td class="col-ytd">12.5</td><td class="col-ytd">0.71%</td><td>0</td><td class="roi-low">0.0</td><td>1.74</td><td>0</td><td>234</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <b>智投类型复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>非智投为主：</b>当前消耗 <b>99.29% 集中在 ADQ 非智投</b>（日均 1,754 元，下单 ROI 19.6），是主力投放方式。</li>
+          <li><b>智投几乎未投：</b>单链路智投仅占 0.71%（日均 12.5 元），且下单 ROI 为 0，处于近乎空白状态。</li>
+          <li><span class="sugg">可增加<b>全域通</b>投放（属智投 / CPA 类，小店后台极简操作）—— 作为常态化打底，与 ADQ 非智投形成"主力放量 + 打底补量"组合，拓宽流量入口、降低对单一投放方式的依赖。起步小预算测试，跑通 CPA 模型后再稳步加投。</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 分版位 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">06</span><h2>分版位：视频号 ROI 效果好，重点抓视频号版位投放 + 素材</h2>
+      <span class="sub">二级流量拆分</span>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <b>二级流量（版位）拆分</b>
+        <span class="badge">占比最大：朋友圈 62.5%</span>
+      </div>
+      <div class="chart-box"><canvas id="shopPlace"></canvas></div>
+      <div class="tbl-scroll" style="margin-top:10px">
+        <table>
+          <thead>
+            <tr><th style="text-align:left">版位</th><th>日均消耗(元)</th><th>消耗占比</th><th>日均下单(元)</th><th>下单ROI</th><th>CTR(%)</th><th>浅层CVR(%)</th><th>有消耗创意</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>微信朋友圈</td><td class="col-ytd">1,102.2</td><td class="col-ytd">62.46%</td><td>18,699</td><td class="roi-mid">17.0</td><td>1.24</td><td>0.71</td><td>1,840</td></tr>
+            <tr class="hl-row"><td>微信视频号</td><td class="col-ytd">623.9</td><td class="col-ytd">35.34%</td><td>14,613</td><td class="col-ytd roi-hi">23.4</td><td>2.89</td><td>8.49</td><td>1,302</td></tr>
+            <tr><td>微信公众号</td><td class="col-ytd">34.0</td><td class="col-ytd">1.92%</td><td>821</td><td class="roi-hi">24.2</td><td>2.99</td><td>13.30</td><td>705</td></tr>
+            <tr><td>微信搜一搜</td><td class="col-ytd">2.7</td><td class="col-ytd">0.16%</td><td>176</td><td class="roi-hi">64.3</td><td>9.67</td><td>2.02</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <b>分版位复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>双版位主导：</b>朋友圈（62.5% 消耗，ROI 17.0）是跑量主力，视频号（35.3% 消耗，ROI <b>23.4</b>）是效率引擎 —— 视频号 ROI 高出朋友圈 38%。</li>
+          <li><b>视频号版位 ROI 效果好：</b>CTR 2.89%（朋友圈 1.24% 的 2.3 倍）、浅层 CVR 8.49%（朋友圈 0.71% 的 12 倍），<b>转化链路短、转化质量优</b>。<span class="sugg"><span class="hlmark">重点抓视频号版位投放 + 素材增加及优化，加大视频号预算配比。</span></span></li>
+          <li><b>搜一搜 ROI 最高（64.3）但量极小：</b>仅 2.7 元/日、3 个创意，高意向搜索流量承接效率突出。<span class="sugg"><span class="hlmark">小步加投搜一搜品牌词 / 品类词，作为高转化补量渠道。</span></span></li>
+          <li><b>公众号版位 ROI 24.2 但量小：</b>可适度放量测试。<span class="sugg">当前聚焦微信生态内四大版位（朋友圈/视频号/公众号/搜一搜）优化。</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 优化目标 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">07</span><h2>优化目标：集中下单 & 下单 ROI，可增加下单 ROI 深辅 & 24h 退款率</h2>
+      <span class="sub">浅层-深层 / ROI 优化目标拆分</span>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <b>优化目标拆分</b>
+        <span class="badge">占比最大：下单 92.7%</span>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr><th style="text-align:left">优化目标</th><th>日均消耗(元)</th><th>消耗占比</th><th>日均下单(元)</th><th>下单ROI</th><th>CTR(%)</th><th>浅层CVR(%)</th><th>有消耗创意</th></tr>
+          </thead>
+          <tbody>
+            <tr class="hl-row"><td>下单</td><td class="col-ytd">1,637.2</td><td class="col-ytd">92.72%</td><td>33,994</td><td class="roi-mid">20.8</td><td>1.55</td><td>0.97</td><td>2,002</td></tr>
+            <tr><td>微信流量预约行为</td><td class="col-ytd">125.6</td><td class="col-ytd">7.11%</td><td>75</td><td class="roi-low">0.60</td><td>2.11</td><td>20.62</td><td>22</td></tr>
+            <tr><td>下单-下单ROI</td><td class="col-ytd">4.0</td><td class="col-ytd">0.23%</td><td>240</td><td class="col-ytd roi-hi">59.5</td><td>2.23</td><td>2.72</td><td>239</td></tr>
+            <tr><td>其他</td><td>0.003</td><td>0.00%</td><td>0</td><td class="roi-low">0.0</td><td>0</td><td>—</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <b>优化目标复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>消耗集中在「下单」目标：</b>92.72% 消耗在下单目标（ROI 20.8），下单-下单 ROI 仅占 0.23% 但 ROI 高达 <b>59.5</b>，是当前 ROI 最优的优化目标。</li>
+          <li><b>微信流量预约行为</b>占 7.11% 但 ROI 仅 0.60（浅层 CVR 20.62% 偏高但未到下单），属浅层目标承接断点。</li>
+          <li><span class="sugg"><b>增加「下单 ROI」深度辅助目标：</b>当前下单-下单 ROI 仅 4 元/日但 ROI 59.5，已验证深度优化目标有效性，应加大配比 —— 在下单放量基础上叠加下单 ROI 卡质，兼顾规模与效率。</span></li>
+          <li><span class="sugg"><b>增加「24h 退款率」优化目标：</b>从支付后质量维度控质，降低退款损耗、提升净 ROI，补齐"下单→付费→退款"链路的质量闭环。</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 人群画像 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">08</span><h2>ADQ 下单人群画像：核心 30-49 岁，高 ROI 潜力在 25-34 岁男性</h2>
+      <span class="sub">性别 × 年龄段</span>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <b>人群画像 · 性别汇总</b>
+        <span class="hint">全周期消耗口径 · 整体消耗 16.1 万 · 下单 312.2 万 · ROI 19.4</span>
+      </div>
+      <div class="grid-2" style="grid-template-columns:.75fr 1.25fr">
+        <div>
+          <table>
+            <thead><tr><th style="text-align:left">性别</th><th>消耗(元)</th><th>消耗占比</th><th>下单(元)</th><th>下单ROI</th></tr></thead>
+            <tbody>
+              <tr class="hl-row"><td>女</td><td class="col-ytd">74,518</td><td class="col-ytd">46.4%</td><td>1,260,084</td><td class="roi-mid">16.9</td></tr>
+              <tr><td>男</td><td class="col-ytd">51,118</td><td class="col-ytd">31.8%</td><td>1,140,259</td><td class="col-ytd roi-hi">22.3</td></tr>
+              <tr><td>未知</td><td class="col-ytd">35,366</td><td class="col-ytd">22.0%</td><td>721,805</td><td class="roi-mid">20.4</td></tr>
+              <tr style="font-weight:700;background:#f8fafc"><td>合计</td><td>161,002</td><td>100%</td><td>3,122,148</td><td>19.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart-box short"><canvas id="shopAge"></canvas></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);margin:14px 0 6px">高消耗 & 高 ROI 年龄段明细（按性别 × 年龄，消耗单位：元）：</div>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th style="text-align:left">年龄段</th><th>女-消耗</th><th>女-ROI</th><th>男-消耗</th><th>男-ROI</th><th>未知-消耗</th><th>未知-ROI</th></tr></thead>
+          <tbody>
+            <tr><td>19-24</td><td>1,888</td><td class="roi-hi">24.5</td><td>1,522</td><td class="roi-mid">20.6</td><td>393</td><td class="roi-low">9.7</td></tr>
+            <tr class="hl-row"><td>25-29</td><td class="col-ytd">5,098</td><td class="col-ytd roi-mid">20.7</td><td class="col-ytd">4,654</td><td class="col-ytd roi-mid">17.4</td><td class="col-ytd">1,776</td><td class="col-ytd roi-hi">30.0</td></tr>
+            <tr><td>30-34</td><td class="col-ytd">9,045</td><td class="roi-mid">19.5</td><td class="col-ytd">7,521</td><td class="col-ytd roi-hi">29.9</td><td class="col-ytd">4,513</td><td class="roi-mid">26.2</td></tr>
+            <tr><td>35-39</td><td class="col-ytd">16,817</td><td class="roi-mid">19.2</td><td class="col-ytd">9,948</td><td class="col-ytd roi-hi">23.9</td><td class="col-ytd">6,282</td><td class="roi-mid">17.4</td></tr>
+            <tr><td>40-44</td><td class="col-ytd">18,855</td><td class="roi-low">12.7</td><td class="col-ytd">10,143</td><td class="col-ytd roi-mid">21.2</td><td class="col-ytd">7,634</td><td class="roi-mid">16.1</td></tr>
+            <tr><td>45-49</td><td class="col-ytd">12,086</td><td class="roi-mid">14.6</td><td class="col-ytd">7,463</td><td class="col-ytd roi-mid">20.6</td><td class="col-ytd">6,960</td><td class="roi-mid">21.1</td></tr>
+            <tr><td>50-54</td><td>4,857</td><td class="roi-mid">19.3</td><td>3,568</td><td class="roi-mid">24.2</td><td>3,275</td><td class="roi-mid">20.4</td></tr>
+            <tr><td>55-59</td><td>2,889</td><td class="roi-mid">24.3</td><td>2,489</td><td class="roi-low">13.3</td><td>2,193</td><td class="roi-mid">16.8</td></tr>
+            <tr><td>60-64</td><td>1,618</td><td class="roi-low">12.4</td><td>2,031</td><td class="roi-mid">19.7</td><td>1,354</td><td class="roi-hi">35.6</td></tr>
+            <tr><td>65+</td><td>1,216</td><td class="roi-low">7.4</td><td>1,481</td><td class="roi-mid">24.9</td><td>872</td><td class="roi-mid">17.8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <b>人群画像复盘 · 描述 + 建议：</b>
+        <ul class="bullets">
+          <li><b>女性消耗最多但 ROI 偏低：</b>女性消耗 46.4%（7.45 万）、男性 31.8%（5.11 万）、未知 22.0%。<b>男性 ROI 22.3 最高、女性 16.9 最低</b>，女性跑量但效率弱于男性。</li>
+          <li><b>核心人群 30-49 岁：</b>该区间贡献约 <b>60%+</b> 消耗，其中<b>女 35-44 岁（3.57 万）消耗最高</b>、男 35-44 岁次之。女性 40-44 岁 ROI 偏低（12.7）需关注。</li>
+          <li><b>ROI 表现：</b>男性 ROI 22.3 整体高于女性 16.9，但男性并非视频号核心受众群体。高 ROI 年龄段包括未知 60-64（35.6）、男 30-34（29.9）、男 50-54（24.2）等，样本量较小。<span class="sugg"><span class="hlmark">建议以核心 30-49 岁女性稳量为主，女性 40-44 岁 ROI 偏低（12.7）需关注创意匹配度。</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 08 素材调优 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">09</span><h2>视频素材调优建议：大疆视频号 ROI 是大盘 8.3 倍，扩产能 + 淘汰低效</h2>
+      <span class="sub">大疆视频号 vs 大盘品牌客户</span>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <b>大疆视频号素材 vs 大盘品牌客户素材 · 整体对比</b>
+        <span class="hint">日均口径 · 全部为微信视频号版位</span>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th style="text-align:left;width:200px">维度</th><th>大疆视频号</th><th>大盘品牌客户</th><th>对比</th></tr></thead>
+          <tbody>
+            <tr><td>有消耗素材数</td><td class="col-ytd">238</td><td class="col-ytd">1,000+</td><td class="down">大疆产能仅为大盘 ~24%</td></tr>
+            <tr><td>日均消耗（元）</td><td class="col-ytd">623.9</td><td class="col-ytd">185,659.8</td><td class="down">量级差距大（大疆小店体量小）</td></tr>
+            <tr class="hl-row"><td>整体下单 ROI</td><td class="col-ytd roi-hi">23.42</td><td class="col-ytd roi-low">2.81</td><td class="up">大疆是大盘 8.3 倍</td></tr>
+            <tr><td>TOP10 素材消耗占比</td><td class="col-ytd">61.9%</td><td class="col-ytd">17.6%</td><td class="up">大疆头部集中度更高</td></tr>
+            <tr><td>高 ROI 素材（≥30）占比</td><td class="col-ytd">13%（31 个 / 消耗 33%）</td><td class="col-ytd">1%（10 个 / 消耗 0%）</td><td class="up">大疆高质量素材占比显著领先</td></tr>
+            <tr><td>CTR 中位（%）</td><td class="col-ytd">2.82</td><td class="col-ytd">2.06</td><td class="up">大疆 +37%</td></tr>
+            <tr><td>CVR 中位（有ROI素材, %）</td><td class="col-ytd">2.14</td><td class="col-ytd">3.27</td><td class="down">大盘浅层略高（客单低）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight-callout">
+        <b>视频素材调优核心方向：</b>
+        大疆视频号有消耗素材仅 238 个（大盘品牌客户 1000+），产能缺口明显。当前 TOP 素材 ROI 36-46 已验证高转化模型，<b>核心策略是批量复用已验证的高 ROI 素材模板——复制卖点结构、前 3 秒钩子与场景叙事框架，快速提升素材量级</b>，将头部集中度（TOP10 占 62% 消耗）转化为可持续的产能规模。
+      </div>
+    </div>
+
+    <!-- 08b · 抽帧分析 -->
+    <div class="card" style="margin-top:14px">
+      <div class="card-h">
+        <b>抽帧分析：TOP 跑量素材画面结构 · 卖点提炼 · 异常诊断</b>
+        <span class="hint">大疆视频号 TOP20 + 大盘品牌 TOP10 · 各素材抽 6 帧（10/25/40/55/70/90 percentile）</span>
+      </div>
+      <div style="font-size:12.5px;color:var(--ink-2);line-height:1.75;margin-bottom:6px">
+        对下载完整视频后按等间距抽出 6 关键帧做画面 / 文案 / 结构分析。<span class="fc-tag ok">绿边</span>=高 ROI 标杆（≥26）｜<span class="fc-tag warn">橙边</span>=大盘品牌参考。
+      </div>
+
+      <!-- Section A · 大疆高ROI标杆 -->
+      <div style="margin-top:14px;font-size:13.5px;font-weight:700;color:var(--ink);border-left:3px solid var(--ok);padding-left:10px">A · 大疆高 ROI 标杆素材（ROI ≥ 26）</div>
+      <div class="frame-grid">
+        <div class="frame-card hi">
+          <div class="fc-head"><span class="fc-rank">大疆 #2</span><span class="fc-metric">消耗 <b>59.7</b> · ROI <b>46.2</b> · CTR <b>6.11%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/dj_02_955f76a9.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag ok">开箱种草</span>
+              <span class="fc-tag">价格锚点</span>
+              <span class="fc-tag">达人口播</span>
+              <span class="fc-tag">场景外拍</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>产品盒/手持特写 → <span class="hlblue">"Pocket 3 之前 2799"</span> → "现在活动直接降 1200" → 拿到内容展示（麦克风/手柄）→ 场景样片（外拍/人物美颜）→ "我觉得挺划算的"收尾。价格锚点式钩子 + 拿到手权益清单 + 场景验证三段式，卖点清晰、CTR 双倍于平均。</div>
+          </div>
+        </div>
+
+        <div class="frame-card hi">
+          <div class="fc-head"><span class="fc-rank">大疆 #8</span><span class="fc-metric">消耗 <b>21.8</b> · ROI <b>35.8</b> · CTR <b>4.59%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/dj_08_54f3a610.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag ok">口语化钩子</span>
+              <span class="fc-tag">价格锚点</span>
+              <span class="fc-tag">高转化引导</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>长城/古建外景手持产品 → <span class="hlblue">"之前 2799 犹豫了，后来想买都拍大腿"</span> → "现在 Pocket 3 直降 1200 啊朋友们 4K 电影级画质" → 卖点罗列（三轴防抖/智能跟随/机内美颜）→ 产品盒 + <span class="hlmark">"赶紧去看看"</span> CTA 闭环。悔恨式钩子+强引导，CTR ROI 都稳。</div>
+          </div>
+        </div>
+
+        <div class="frame-card hi">
+          <div class="fc-head"><span class="fc-rank">大疆 #20</span><span class="fc-metric">消耗 <b>7.1</b> · ROI <b>48.0</b> · CTR <b>2.42%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/dj_20_024746f1.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag ok">场景样片</span>
+              <span class="fc-tag ok">画质炫技</span>
+              <span class="fc-tag">品牌调性</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>手持产品草地画面 → 樱花特写+圆形景深展示 → "SHOT ON OSMO POCKET 3" 品牌标识贯穿。以画质样片为核心（樱花/花瓣景深），零口播、纯视觉。<b>ROI 全场最高（48）但 CTR 偏低（2.42%）</b>——高质量匹配但引流效率一般，作为品牌调性素材保留。</div>
+          </div>
+        </div>
+
+        <div class="frame-card hi">
+          <div class="fc-head"><span class="fc-rank">大疆 #13</span><span class="fc-metric">消耗 <b>12.8</b> · ROI <b>39.2</b> · CTR <b>5.47%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/dj_13_dcabcba5.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag ok">场景生活化</span>
+              <span class="fc-tag">达人出镜</span>
+              <span class="fc-tag">多场景剪辑</span>
+              <span class="fc-tag">CTA 直白</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>男主草地跳跃→城市天际线→开箱手持特写("Pocket 3 这次活动力度…是真的不小")→ 花裙美女/汉服古风等多风格样片 →<span class="hlmark">"早买早用上"</span>。多风格样片 + 达人自述 + 直白 CTA，CTR 全场靠前。</div>
+          </div>
+        </div>
+
+        <div class="frame-card hi">
+          <div class="fc-head"><span class="fc-rank">大疆 #3</span><span class="fc-metric">消耗 <b>57.3</b> · ROI <b>26.6</b> · CTR <b>4.27%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/dj_03_048b6137.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag ok">悔恨钩子</span>
+              <span class="fc-tag">开箱种草</span>
+              <span class="fc-tag">场景样片</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>户外手持 Pocket 3+ <span class="hlblue">"Pocket 3 之前 2799 时我没舍得下手"</span> → 拿到手清单 → 4K/三轴样片（西湖/白裙人物/古建）→ "你们也别跟我一样等没了再后悔"。跟 #2 是同一素材家族的变体，情绪钩子更强。</div>
+          </div>
+        </div>
+
+        <div class="frame-card hi">
+          <div class="fc-head"><span class="fc-rank">大疆 #11</span><span class="fc-metric">消耗 <b>16.0</b> · ROI <b>27.5</b> · CTR <b>4.09%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/dj_11_4f208fa2.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag ok">达人开箱</span>
+              <span class="fc-tag">功能演示</span>
+              <span class="fc-tag">高转化引导</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>特写 Action 相机 → 达人吐槽"砖头一样的大相机"痛点 → 旋转屏演示 → 抗打场景（白裙人物）→ "素颜拍出来都特别抗打"。<b>产品对比+痛点驱动</b>，Action 系列的典型跑量结构。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout ok" style="margin-top:12px">
+        <b>A · 大疆高 ROI 素材共性：</b>
+        <ul class="bullets">
+          <li><b>钩子：</b>价格锚点（"之前 2799 → 现在直降 1200"）+ 悔恨/紧迫（"没舍得下手→拍大腿"）双管齐下，前 3 秒信息密度高。</li>
+          <li><b>结构：</b>三段式 —— <b>钩子（价格/痛点）→ 权益清单（拿到手内容）→ 场景样片（4K 电影级/人物美颜/风景）</b> → 直白 CTA。</li>
+          <li><b>转化闭环：</b>明确引导"赶紧去看看"或"早买早用上"，跳转链路清晰。</li>
+        </ul>
+      </div>
+
+      <!-- Section B · 大盘品牌参考 -->
+      <div style="margin-top:20px;font-size:13.5px;font-weight:700;color:var(--ink);border-left:3px solid var(--warn);padding-left:10px">B · 大盘品牌客户 TOP 素材（参考对标）</div>
+      <div class="frame-grid">
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #1</span><span class="fc-metric">消耗 <b>7133</b> · ROI <b>2.4</b> · CTR <b>0.69%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_01_03a796b2.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">洗地机</span>
+              <span class="fc-tag">达人剧情</span>
+              <span class="fc-tag">痛点对比</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>男主蹲地看水渍痛点 → 洗地机演示"一样非常干净" → "1000+ 想占便宜的抓紧了" 女主开箱 → 沙发底床底自由出入 → 五分钟滚刷。<b>痛点—对比—功能—价格—演示</b>五段式，家电品类经典结构。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #2</span><span class="fc-metric">消耗 <b>5570</b> · ROI <b>2.4</b> · CTR <b>1.17%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_02_ebbf6cc6.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">洗地机</span>
+              <span class="fc-tag">新旧对比</span>
+              <span class="fc-tag">参数升级</span>
+              <span class="fc-tag">价格钩子</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b><span class="hlmark">"它刚出的新款定价就比老款便宜 1000"</span>价格钩子 → <span class="hlmark">"这你让去年买洗地机这咋整"</span>共情吐槽 → <span class="hlblue">"今年直接给你干到 28000Pa"</span>参数升级 → 卧室/客厅使用场景 →"让擦地变成一件很简单的事"。<b>老款VS新款对比 + 参数升级 + 简单粗暴价格钩子</b>三板斧，字幕黄底大字贯穿全片。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #3</span><span class="fc-metric">消耗 <b>4878</b> · ROI <b>2.2</b> · CTR <b>2.45%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_03_bd2b8dde.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">干衣机</span>
+              <span class="fc-tag">场景多元</span>
+              <span class="fc-tag">价格暗示</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>手持特写"奶呼呼颜值高"→"家里宿舍都能用"→"巴氏杀菌+紫外线除螨"卖点浮层→ 达人 vlog 场景 → "强烈建议你们选白色这款"。生活化叙事，白色/绿色两款对比。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #4</span><span class="fc-metric">消耗 <b>2601</b> · ROI <b>3.8</b> · CTR <b>2.12%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_04_298f5a33.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">洗地机</span>
+              <span class="fc-tag">脏乱痛点</span>
+              <span class="fc-tag">价格对标</span>
+              <span class="fc-tag">视觉冲击</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b><span class="hlmark">"木地板怕水"</span>湿漉漉地板 →<span class="hlmark">"就连缝里的"</span>木缝脏污特写 →<span class="hlblue">"一两千的洗地机能有这效果"</span>价格对标（暗示自家更便宜）→"垃圾不用你扫" →"臭味不用你闻"污水箱特写 →<span class="hlmark">"犹豫一天"</span>紧迫感收尾。<b>视觉冲击（脏污特写 + 污水箱红液）+ 对手价格对标</b>是家电爆款素材套路。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #5</span><span class="fc-metric">消耗 <b>2506</b> · ROI <b>3.3</b> · CTR <b>2.40%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_05_67633cfa.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">学习机</span>
+              <span class="fc-tag">人物剧情</span>
+              <span class="fc-tag">场景植入</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>"懒妈带二娃还能天天出去玩的秘诀"标题 → 家庭场景 → 女主拎学习机 → "直降 500"价格贴纸 → "它新升级的 AI"卖点 → "陪孩子练"应用画面。<b>标题黄底大字+价格标签</b>是大盘家电学习品类的通用套路。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #7</span><span class="fc-metric">消耗 <b>2000</b> · ROI <b>2.9</b> · CTR <b>1.46%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_07_8c7a22bb.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">除湿机</span>
+              <span class="fc-tag">功能演示</span>
+              <span class="fc-tag">场景高端</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>女主抱产品阳光下"8 米上排水功能" →<span class="hlblue">"全自动工作"</span>酒店级走廊场景 →<span class="hlblue">"24 小时帮我平衡全屋湿度"</span>→ "这么智能的除湿机呀" →紫色蜂窝滤网微观特写（<b>产品科技感视觉</b>）→ "如果你也感兴趣的话" 日式庭院静置。<b>高端场景 + 产品美学镜头 + 参数字幕</b>，主打高客单调性。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #9</span><span class="fc-metric">消耗 <b>1882</b> · ROI <b>1.8</b> · CTR <b>0.99%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_09_668e0ae9.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">吹风机</span>
+              <span class="fc-tag">价格锚点</span>
+              <span class="fc-tag">功能可视化</span>
+              <span class="fc-tag">品牌宠粉</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b><span class="hlmark">"259 的时候你不买"</span>价格悔恨钩子 →<span class="hlblue">"徕芬带着品牌宠粉福利来了"</span>→<span class="hlmark">"地板价"</span>黄底大字 →<b>吹水杯风力可视化演示</b>（把风吹到透明杯里）→"高速无刷马达"参数 → 门店陈列 →"趁现在这么优惠"CTA。<b>价格悔恨钩子 + 功能可视化实验</b>结构。</div>
+          </div>
+        </div>
+
+        <div class="frame-card pool-card">
+          <div class="fc-head"><span class="fc-rank pool">大盘 #10</span><span class="fc-metric">消耗 <b>1754</b> · ROI <b>2.5</b> · CTR <b>2.19%</b></span></div>
+          <div class="fc-img"><img src="mat_frames/pool_10_d77793c9.jpg" alt=""></div>
+          <div class="fc-body">
+            <div class="tag-row">
+              <span class="fc-tag warn">美容仪</span>
+              <span class="fc-tag">前后对比</span>
+              <span class="fc-tag">达人推荐</span>
+            </div>
+            <div class="fc-txt"><b>结构：</b>皮肤微通道特写 → 毛孔展示 → 产品收纳盒 → 高颜值达人自拍前后对比 → "半年量水光精华弹"卖点 → 女达人推荐"极萌水光仪"。<b>视觉冲击型钩子 + 效果对比 + 品牌达人组合</b>。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn" style="margin-top:12px">
+        <b>B · 大盘品牌可借鉴、也需警惕的地方：</b>
+        <ul class="bullets">
+          <li><b>可借鉴 · 视觉手法：</b>①<b>黄底黑字大标题</b>贯穿全片打钩子；②<b>价格贴纸</b>大红/黄字浮层（"直降500"、"地板价"、"259 的时候你不买"）；③<b>老款 vs 新款、对手价格 vs 自家</b>对标；④<b>功能可视化实验</b>（吹水杯 / 污水箱 / 蜂窝滤网微观）；⑤<b>脏乱痛点特写</b>视觉冲击。</li>
+          <li><b>可借鉴 · 结构套路：</b>"痛点 → 老款吐槽 → 新款参数升级 → 使用场景 → 价格钩子 → CTA"的五段式，前 3 秒必打价格或痛点。</li>
+          <li class="sugg">重点复用"标题大字+价格贴纸+痛点/参数对比+功能可视化实验"四个视觉抓手；不复用"低 ROI 换规模"的投放策略。</li>
+        </ul>
+      </div>
+
+      <!-- Section C · 结构对比 -->
+      <div style="margin-top:20px;font-size:13.5px;font-weight:700;color:var(--ink);border-left:3px solid var(--brand);padding-left:10px">C · 大疆 vs 大盘 · 素材结构五维对比</div>
+      <div class="struct-cmp">
+        <div class="struct-col dj">
+          <h5 style="color:var(--brand)">大疆 · 高 ROI 结构（推荐扩产模板）</h5>
+          <div class="struct-row"><div class="sk-l">前3秒</div><div class="sk-r"><b>价格锚点+悔恨钩子</b>："之前2799我犹豫了→现在直降1200"（数字黄底大字浮层）</div></div>
+          <div class="struct-row"><div class="sk-l">卖点段</div><div class="sk-r"><b>权益清单</b>：拿到手内容一字排开（主机+云台+麦克风+电池），配<b>参数标签</b>（4K电影级 / 三轴云台 / 智能跟随 / 机内美颜）</div></div>
+          <div class="struct-row"><div class="sk-l">场景段</div><div class="sk-r"><b>3-5 秒多风格样片</b>：外拍风景 / 白裙美女 / 汉服古风 / 城市天际线 / 花卉景深，快剪+品牌角标</div></div>
+          <div class="struct-row"><div class="sk-l">情绪段</div><div class="sk-r"><b>达人自述口播</b>："我觉得挺划算的" / "早买早用上" / "别再犹豫"</div></div>
+          <div class="struct-row"><div class="sk-l">CTA</div><div class="sk-r"><b>强引导</b>："赶紧去看看" / 或直接商品卡</div></div>
+        </div>
+        <div class="struct-col pool">
+          <h5 style="color:var(--warn)">大盘品牌 · 大众家电套路（借鉴视觉手法）</h5>
+          <div class="struct-row"><div class="sk-l">前3秒</div><div class="sk-r"><b>痛点问题+黄底大字标题</b>："懒妈带二娃…的秘诀" / "让去年买洗地机的这咋整"</div></div>
+          <div class="struct-row"><div class="sk-l">卖点段</div><div class="sk-r"><b>浮层参数标签</b>：直降 500 / 28000Pa / 巴氏杀菌+紫外线除螨（价格标签用大红/黄字贴纸）</div></div>
+          <div class="struct-row"><div class="sk-l">场景段</div><div class="sk-r"><b>使用场景对比 + 前后效果对比</b>：地板脏 vs 干净 / 皮肤前 vs 后 / 有产品 vs 没产品</div></div>
+          <div class="struct-row"><div class="sk-l">情绪段</div><div class="sk-r"><b>达人推荐 / 剧情反转</b>：全家 vlog / 达人真人试用</div></div>
+          <div class="struct-row"><div class="sk-l">CTA</div><div class="sk-r"><b>商品卡</b>：走量为主，ROI 底线 1-3</div></div>
+        </div>
+      </div>
+
+      <div class="highlight-callout" style="margin-top:14px">
+        <b>🎯 抽帧分析 · 4 条落地结论：</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>① 建立高 ROI 素材"三段式"生产模板：</b>价格锚点钩子（3s）→ 权益清单+卖点标签（5-8s）→ 多场景样片+达人自述+强引导 CTA（15-20s）。以大疆 #2 / #5 / #8 / #13 为基准，批量复用。</li>
+          <li><b>② 借鉴大盘视觉手法（四个视觉抓手）：</b>标题黄底大字、价格贴纸浮层（"259 时候你不买"/"直降 500"/"地板价"）、新旧对比 / 对手价格对标、功能可视化实验（吹水杯 / 污水箱 / 参数升级），能显著提升大疆前 3 秒 CTR。</li>
+          <li><b>③ 品牌角标标准化：</b>"SHOT ON OSMO POCKET 3" 已在 #5 #20 稳定使用，是差异化视觉资产，扩产时保留统一角标风格。</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+  <section>
+    <div class="sec-title">
+      <span class="n">10</span><h2>小店闭环 · 投放优化建议汇总</h2>
+      <span class="sub">全域通 · 视频号 · 深辅目标 · 人群 · 素材</span>
+    </div>
+
+    <div style="font-size:13px;color:var(--ink-2);line-height:1.75;margin-bottom:12px">
+      基于 Part 2 六个模块的复盘数据，从<b>全域通补量、视频号版位加码+素材扩产、优化目标拓展</b>三个方向给出小店闭环专项优化建议。
+    </div>
+
+    <div class="direction-grid">
+      <div class="direction-card" style="border-top-color:var(--brand)">
+        <div class="n">01</div>
+        <h4>增加全域通投放 · 补充智投空白</h4>
+        <p>当前小店闭环<b>非智投占比 99.3%（ROI 19.6）</b>，单链路智投仅 0.7%（ROI ≈ 0），全域通几乎未启用。<b>建议以全域通打底</b>，利用系统智能定向补充优质流量，降低人工盯盘成本。</p>
+        <p style="margin-top:10px"><span class="sugg">先小预算测试全域通跑量效果，验证 ROI 后逐步放大。</span></p>
+        <span class="tag2">全域通补量 · 填补智投空白</span>
+      </div>
+
+      <div class="direction-card" style="border-top-color:#8b5cf6">
+        <div class="n" style="color:#8b5cf6">02</div>
+        <h4>视频号版位加码 · 抓高 ROI 增长点 + 素材扩产</h4>
+        <p>视频号版位 <b>ROI 23.4，比朋友圈（17.0）高出约 38%</b>，且用户停留更深、互动更高。<b>重点加码视频号版位投放</b>。</p>
+        <p style="margin-top:10px"><b>素材扩产：</b>大疆视频号 ROI 23.42 是大盘 2.81 的 <b>8.3 倍</b>，但素材仅 238 个（大盘 1000+）。<b>以抽帧分析提炼的"价格锚点+权益清单+场景样片"三段式为标准模板批量扩产</b>，同时淘汰 CVR 高但 ROI≈0 的异常素材。目标素材量翻倍至 <b>500+</b>，TOP10 占比从 62% 向 <b>40% 以下</b>分散，降低头部依赖风险。</p>
+        <p style="margin-top:10px"><span class="sugg">目标：视频号消耗占比向 30-40% 靠拢；素材参考 Part 2 抽帧分析中已验证的三段式模板批量复用。</span></p>
+        <span class="tag2" style="color:#8b5cf6;border-color:#ddd6fe;background:#f5f3ff">视频号优先 · 素材三段式扩产</span>
+      </div>
+
+      <div class="direction-card" style="border-top-color:var(--warn)">
+        <div class="n" style="color:var(--warn)">03</div>
+        <h4>拓展优化目标 · 加深辅 & 退款率</h4>
+        <p>当前<b>"下单"目标占 92.7%（ROI 20.8）</b>，"下单-下单 ROI"目标仅 0.23% 但 ROI 高达 59.5。<b>建议新增两项优化目标：</b></p>
+        <ul class="bullets" style="margin:8px 0 0;font-size:12.5px">
+          <li><b>下单 ROI 深度优化：</b>对已有一定转化的品线叠加深辅，卡住质量再放量</li>
+          <li><b>24h 退款率优化：</b>针对下单后退款率高的问题品线精准调控</li>
+        </ul>
+        <span class="tag2" style="color:var(--warn);border-color:#fde68a;background:#fff7ed">下单 ROI 深辅 + 24h 退款率</span>
+      </div>
+
+    </div>
+
+    <div class="highlight-callout" style="margin-top:14px">
+      <b>🎯 小店闭环三条优化建议 · 落地优先级：</b>
+      <ul class="bullets" style="margin:6px 0 0">
+        <li><b>P0 视频号加码 + 素材扩产：</b>ROI 比朋友圈高 38%，优先转移预算；以三段式模板批量扩产至 500+，TOP10 占比降至 40% 以下；</li>
+        <li><b>P1 全域通测试：</b>当前智投近乎空白，小预算跑通后放量降人力成本；</li>
+        <li><b>P1 优化目标拓展：</b>加"下单 ROI 深辅"+"24h 退款率"两个目标卡质量和控损。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <b>大疆 · Q2 投放复盘</b> · 双链路：小程序直购（中国商城 &amp; 哈苏商城）+ 小店闭环（ADQ）<br>
+    中国商城 2026.04.01-06.30 · 哈苏商城 2026.05.19-07.03 · 小店闭环 2026.05-06 · 腾讯广告 ADQ<br>
+    数据来源于大疆中国商城 + 哈苏商城投放后台、大疆小店 ADQ 后台及腾讯广告平台，仅用于内部复盘沟通。产品内容参考《微信小店生意宝典》2.2.1 / 2.2.2。
+  </footer>
+</div>
+
+<script>
+Chart.defaults.color='#64748b';
+Chart.defaults.font.family='-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif';
+Chart.defaults.font.size=12;
+const gridC='rgba(15,23,42,.06)';
+const BLUE='#1a56db',BLUE_L='rgba(26,86,219,.55)',GOLD='#f59e0b',GOLD_L='rgba(245,158,11,.65)',GREEN='#0f766e',GREEN_L='rgba(15,118,110,.65)';
+if(window.ChartDataLabels){Chart.register(window.ChartDataLabels);}
+Chart.defaults.set('plugins.datalabels',{display:false});
+
+const barLabel={display:true,anchor:'end',align:'end',offset:-2,color:'#334155',font:{size:11,weight:'700'},formatter:v=>v==null?'':(v>=0.05?v.toFixed(v<1?2:1):'')};
+const lineLabel={display:true,align:'top',offset:5,color:'#0f172a',font:{size:11,weight:'700'},
+  backgroundColor:'rgba(255,255,255,.88)',borderColor:'rgba(15,23,42,.12)',borderWidth:1,borderRadius:4,padding:{top:2,bottom:2,left:4,right:4},formatter:v=>v==null?'':v.toFixed(1)};
+
+// A2 中国商城分版位
+new Chart(document.getElementById('cnPlace'),{
+  data:{labels:['2026/04','2026/05','2026/06'],
+    datasets:[
+      {type:'bar',label:'朋友圈 消耗(万)',data:[20.85,30.90,21.80],backgroundColor:GOLD_L,borderRadius:4,yAxisID:'y',order:3,datalabels:barLabel},
+      {type:'bar',label:'搜一搜 消耗(万)',data:[30.99,31.25,20.01],backgroundColor:BLUE_L,borderRadius:4,yAxisID:'y',order:3,datalabels:barLabel},
+      {type:'line',label:'朋友圈 下单ROI',data:[17.99,11.64,13.33],borderColor:GOLD,backgroundColor:GOLD,borderWidth:2.5,tension:.35,pointRadius:4,yAxisID:'y1',order:1,datalabels:lineLabel},
+      {type:'line',label:'搜一搜 下单ROI',data:[59.31,22.33,26.20],borderColor:GREEN,backgroundColor:GREEN,borderWidth:2.5,tension:.35,pointRadius:4,yAxisID:'y1',order:1,datalabels:lineLabel},
+      {type:'line',label:'朋友圈 付费ROI',data:[8.56,4.85,5.63],borderColor:GOLD,backgroundColor:GOLD,borderWidth:2,borderDash:[5,4],tension:.35,pointRadius:3,pointStyle:'rectRot',yAxisID:'y1',order:2,datalabels:{display:false}},
+      {type:'line',label:'搜一搜 付费ROI',data:[33.45,9.02,10.21],borderColor:GREEN,backgroundColor:GREEN,borderWidth:2,borderDash:[5,4],tension:.35,pointRadius:3,pointStyle:'rectRot',yAxisID:'y1',order:2,datalabels:{display:false}}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
+    plugins:{legend:{labels:{usePointStyle:true,padding:10,font:{size:11}}}},
+    scales:{y:{position:'left',grid:{color:gridC},title:{display:true,text:'消耗(万元)',font:{size:10}},suggestedMax:38,ticks:{font:{size:10}}},
+      y1:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'ROI（实线下单 / 虚线付费）',font:{size:10}},suggestedMax:72,ticks:{font:{size:10}}},
+      x:{grid:{color:gridC},ticks:{font:{size:11}}}}}
+});
+
+// B 哈苏分版位
+new Chart(document.getElementById('hsPlace'),{
+  data:{labels:['2026/05','2026/06','2026/07'],
+    datasets:[
+      {type:'bar',label:'朋友圈 消耗(万)',data:[0.74,2.54,0.16],backgroundColor:GOLD_L,borderRadius:4,yAxisID:'y',order:3,datalabels:barLabel},
+      {type:'bar',label:'搜一搜 消耗(万)',data:[0.002,0.21,0.02],backgroundColor:BLUE_L,borderRadius:4,yAxisID:'y',order:3,datalabels:{...barLabel,formatter:v=>v==null?'':(v>=0.05?v.toFixed(2):'')}},
+      {type:'line',label:'朋友圈 下单ROI',data:[15.89,66.81,41.81],borderColor:GOLD,backgroundColor:GOLD,borderWidth:2.5,tension:.35,pointRadius:4,yAxisID:'y1',order:1,datalabels:lineLabel},
+      {type:'line',label:'搜一搜 下单ROI',data:[null,199.97,null],borderColor:GREEN,backgroundColor:GREEN,borderWidth:2.5,tension:.35,pointRadius:5,yAxisID:'y1',order:1,spanGaps:true,datalabels:lineLabel},
+      {type:'line',label:'朋友圈 付费ROI',data:[5.47,24.74,21.54],borderColor:GOLD,backgroundColor:GOLD,borderWidth:2,borderDash:[5,4],tension:.35,pointRadius:3,pointStyle:'rectRot',yAxisID:'y1',order:2,datalabels:{display:false}},
+      {type:'line',label:'搜一搜 付费ROI',data:[null,100.53,null],borderColor:GREEN,backgroundColor:GREEN,borderWidth:2,borderDash:[5,4],tension:.35,pointRadius:4,pointStyle:'rectRot',yAxisID:'y1',order:2,spanGaps:true,datalabels:{display:false}}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
+    plugins:{legend:{labels:{usePointStyle:true,padding:10,font:{size:11}}},
+      tooltip:{callbacks:{afterBody:items=>items.some(i=>i.dataset.label.includes('搜一搜'))?'※ 搜一搜为小量测试，ROI 偶发高值':''}}},
+    scales:{y:{position:'left',grid:{color:gridC},title:{display:true,text:'消耗(万元)',font:{size:10}},suggestedMax:3,ticks:{font:{size:10}}},
+      y1:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'ROI（实线下单 / 虚线付费）',font:{size:10}},suggestedMax:220,ticks:{font:{size:10}}},
+      x:{grid:{color:gridC},ticks:{font:{size:11}}}}}
+});
+
+// A3 优化目标 消耗占比 饼图
+new Chart(document.getElementById('cnObjDough'),{
+  type:'doughnut',
+  data:{labels:['付费  68.6%','下单  31.4%'],
+    datasets:[{data:[106.83,48.87],
+      backgroundColor:['rgba(26,86,219,.9)','rgba(245,158,11,.9)'],
+      borderColor:'#ffffff',borderWidth:3}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+    plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14,font:{size:12}}},
+      title:{display:true,text:'优化目标消耗占比',color:'#64748b',font:{size:12}},
+      datalabels:{display:true,color:'#fff',font:{size:13,weight:'800'},formatter:(v,c)=>c.chart.data.labels[c.dataIndex].split('  ')[1]}}}
+});
+
+// ===== Part2 · 05 小店分版位（消耗柱 + ROI 线） =====
+new Chart(document.getElementById('shopPlace'),{
+  data:{labels:['朋友圈','视频号','公众号','搜一搜'],
+    datasets:[
+      {type:'bar',label:'日均消耗(元)',data:[1102.2,623.9,34.0,2.7],backgroundColor:BLUE_L,borderRadius:4,yAxisID:'y',datalabels:barLabel},
+      {type:'line',label:'下单ROI',data:[17.0,23.4,24.2,64.3],borderColor:GREEN,backgroundColor:GREEN,borderWidth:2.5,tension:.35,pointRadius:4,yAxisID:'y1',datalabels:lineLabel}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
+    plugins:{legend:{labels:{usePointStyle:true,padding:10,font:{size:11}}}},
+    scales:{y:{position:'left',grid:{color:gridC},title:{display:true,text:'日均消耗(元)',font:{size:10}},suggestedMax:1200,ticks:{font:{size:10}}},
+      y1:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'下单ROI',font:{size:10}},suggestedMax:72,ticks:{font:{size:10}}},
+      x:{grid:{color:gridC},ticks:{font:{size:11}}}}}
+});
+
+// ===== Part2 · 07 小店人群画像（年龄段 × 性别 消耗堆叠柱） =====
+new Chart(document.getElementById('shopAge'),{
+  type:'bar',
+  data:{labels:['19-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65+'],
+    datasets:[
+      {label:'女',data:[1888,5098,9045,16817,18855,12086,4857,2889,1618,1216],backgroundColor:'rgba(236,72,153,.72)',borderRadius:3,stack:'a'},
+      {label:'男',data:[1522,4654,7521,9948,10143,7463,3568,2489,2031,1481],backgroundColor:BLUE_L,borderRadius:3,stack:'a'},
+      {label:'未知',data:[393,1776,4513,6282,7634,6960,3275,2193,1354,872],backgroundColor:'rgba(148,163,184,.6)',borderRadius:3,stack:'a'}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10}},
+    plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:10,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toLocaleString()} 元`}}},
+    scales:{x:{stacked:true,grid:{color:gridC},ticks:{font:{size:11}}},
+      y:{stacked:true,grid:{color:gridC},title:{display:true,text:'消耗(元)',font:{size:10}},ticks:{font:{size:10},callback:v=>v>=1000?(v/1000)+'k':v}}}}
+});
+</script>
+</body>
+</html>
