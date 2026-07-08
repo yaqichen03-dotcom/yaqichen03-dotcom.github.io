@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图拉斯 · Q2 季度复盘 · 腾讯广告数码家电</title>
+<meta name="viewport" content="width=1280">
+<style>
+  :root{
+    --brand:#1a56db; --brand-2:#2563eb; --brand-soft:#eaf1ff;
+    --ok:#0f766e; --ok-soft:#e6fffb;
+    --warn:#b45309; --warn-soft:#fff7ed;
+    --bad:#b91c1c; --bad-soft:#fee2e2;
+    --ink:#0f172a; --ink-2:#334155; --muted:#64748b;
+    --line:#e2e8f0; --bg:#f8fbff; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    font-size:14px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:24px 28px 60px}
+
+  .hero{background:linear-gradient(135deg,#1a56db 0%,#0ea5e9 100%);color:#fff;
+    border-radius:14px;padding:28px 32px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:280px;height:280px;
+    background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)}
+  .hero .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:4px 12px;border-radius:20px;font-size:12px;letter-spacing:.5px}
+  .hero h1{margin:10px 0 4px;font-size:26px;font-weight:700;letter-spacing:.5px}
+  .hero .sub{opacity:.9;font-size:13px}
+  .hero .meta{margin-top:14px;display:flex;gap:24px;font-size:12px;opacity:.85;flex-wrap:wrap}
+  .hero .meta span::before{content:"·";margin-right:6px;opacity:.6}
+  .hero .meta span:first-child::before{content:""}
+  .hero a{color:#fff;text-decoration:underline;opacity:.9}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:-24px;
+    position:relative;z-index:2;padding:0 8px}
+  .kpi{background:#fff;border-radius:12px;padding:18px;
+    box-shadow:0 4px 18px rgba(15,23,42,.06);border-top:3px solid var(--brand)}
+  .kpi .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .kpi .v{font-size:24px;font-weight:700;color:var(--ink);line-height:1.1}
+  .kpi .v small{font-size:12px;color:var(--muted);font-weight:500;margin-left:4px}
+  .kpi .d{margin-top:6px;font-size:12px;color:var(--ok);font-weight:600}
+  .kpi .d.warn{color:var(--warn)}
+  .kpi .d.bad{color:var(--bad)}
+
+  section{margin-top:34px}
+  .sec-title{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;
+    border-left:4px solid var(--brand);padding-left:12px}
+  .sec-title .n{font-size:12px;color:#fff;background:var(--brand);
+    padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.5px}
+  .sec-title h2{margin:0;font-size:19px;font-weight:700;color:var(--ink)}
+  .sec-title .sub{color:var(--muted);font-size:13px;margin-left:auto}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#f1f5ff;color:var(--ink-2);font-weight:600;font-size:12px}
+  tbody tr:hover{background:#fafcff}
+  tfoot td{font-weight:700;background:#f8fafc;border-top:2px solid #cbd5e1}
+  .num{font-family:"SF Mono","Menlo",monospace;font-variant-numeric:tabular-nums}
+  .up{color:var(--bad);font-weight:600}
+  .down{color:var(--ok);font-weight:600}
+  .neu{color:var(--muted)}
+  tr.hl-row td{background:#eef4ff}
+  tr.hl-row td:first-child{box-shadow:inset 3px 0 0 var(--brand)}
+
+  .chart-box{position:relative;height:260px;padding:8px 0 0}
+  .chart-box.tall{height:300px}
+
+  .callout{background:var(--brand-soft);border-left:3px solid var(--brand);
+    padding:12px 16px;border-radius:8px;margin-top:12px;font-size:13px;line-height:1.7}
+  .callout.ok{background:var(--ok-soft);border-color:var(--ok)}
+  .callout.warn{background:var(--warn-soft);border-color:var(--warn)}
+  .callout.bad{background:var(--bad-soft);border-color:var(--bad)}
+  .callout b{color:var(--ink)}
+  ul.bullets{margin:8px 0 0;padding-left:20px}
+  ul.bullets li{margin:4px 0}
+
+  .highlight-callout{background:linear-gradient(180deg,#fff9d6 0%,#fff3a8 100%);
+    border-left:4px solid #f59e0b;padding:12px 16px;border-radius:8px;
+    margin-top:12px;font-size:13.5px;line-height:1.7}
+  .highlight-callout b{color:#78350f}
+
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;
+    background:var(--brand-soft);color:var(--brand);font-weight:600;margin-right:6px}
+  .badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .badge.bad{background:var(--bad-soft);color:var(--bad)}
+
+  /* 产品卡 */
+  .product-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .prod-card{background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .prod-head{display:flex;gap:10px;align-items:flex-start}
+  .prod-icon{width:36px;height:36px;border-radius:9px;flex-shrink:0;
+    display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+  .prod-titles{flex:1;min-width:0}
+  .prod-name{font-size:14.5px;font-weight:700;line-height:1.3}
+  .prod-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .prod-value{font-size:12.5px;color:var(--ink-2);line-height:1.65}
+  .prod-value b{color:var(--ink)}
+  .prod-scene{background:#f8fbff;border:1px solid #dbe8ff;border-radius:8px;padding:10px 12px}
+  .prod-scene-k{font-size:11.5px;font-weight:700;color:var(--brand);margin-bottom:6px}
+  .prod-scene ul{margin:0;padding-left:16px;font-size:12px;color:var(--ink-2);line-height:1.65}
+  .prod-scene li{margin:3px 0}
+  .prod-scene b{color:var(--ink)}
+  .prod-case{background:#fff9e6;border-left:3px solid #f59e0b;border-radius:6px;
+    padding:8px 10px;font-size:11.5px;color:#78350f;line-height:1.6}
+  .prod-case b{color:#b45309}
+
+  /* 节点日历 */
+  .cal-wrap{background:linear-gradient(180deg,#fafcff 0%,#ffffff 100%);
+    border:1px solid var(--line);border-radius:12px;padding:6px;overflow:hidden}
+  .cal-table{border-collapse:separate;border-spacing:6px;width:100%;table-layout:fixed}
+  .cal-table th,.cal-table td{padding:0;text-align:left;vertical-align:top;border:none}
+  .cal-table thead th{padding:10px 8px;text-align:center;font-weight:700;font-size:13px;color:#fff;
+    border-radius:8px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+  .cal-table thead th:first-child{background:linear-gradient(135deg,#475569 0%,#64748b 100%)}
+  .cal-month.cal-m7{background:linear-gradient(135deg,#ef4444,#f87171)}
+  .cal-month.cal-m8{background:linear-gradient(135deg,#f97316,#fb923c)}
+  .cal-month.cal-m9{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+  .cal-month.cal-m10{background:linear-gradient(135deg,#059669,#34d399)}
+  .cal-cat{background:#fff;border-radius:8px;text-align:center;padding:14px 6px !important;width:78px;
+    box-shadow:inset 0 0 0 1px var(--line);
+    display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .cal-cat-icon{font-size:20px;width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;background:#f8fafc;margin:0 auto 6px}
+  .cal-cat-name{font-size:13px;font-weight:700;color:var(--ink)}
+  .cal-cat-sub{font-size:11px;color:var(--muted);margin-top:2px}
+  .cal-cell{padding:8px !important;border-radius:8px;vertical-align:top;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+  .cal-c7{background:linear-gradient(180deg,#fef2f2,#fef7f7)}
+  .cal-c8{background:linear-gradient(180deg,#fff7ed,#fffaf3)}
+  .cal-c9{background:linear-gradient(180deg,#eff6ff,#f5f9ff)}
+  .cal-c10{background:linear-gradient(180deg,#ecfdf5,#f2fdf7)}
+  .cal-event{background:#fff;border-radius:8px;padding:9px 11px;margin-bottom:8px;
+    border:1px solid rgba(15,23,42,.06);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+  .cal-event:last-child{margin-bottom:0}
+  .cal-event-date{font-size:10.5px;color:var(--brand);font-weight:700;
+    font-family:"SF Mono",monospace;margin-bottom:4px;letter-spacing:.3px;
+    display:inline-block;background:#eaf1ff;padding:1px 7px;border-radius:10px}
+  .cal-event-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:3px}
+  .cal-event-desc{font-size:11.5px;color:var(--ink-2);line-height:1.55}
+  .cal-event.tulasi-hl{background:linear-gradient(135deg,#fffbeb,#fff3d1);
+    border:1.5px solid #f59e0b;box-shadow:0 3px 10px rgba(245,158,11,.22);position:relative}
+  .cal-event.tulasi-hl::before{content:"⭐";position:absolute;top:-10px;right:8px;font-size:14px;
+    background:#fff;padding:2px 4px;border-radius:50%;box-shadow:0 2px 6px rgba(245,158,11,.35)}
+  .cal-event.tulasi-hl .cal-event-date{background:#fef3c7;color:#b45309}
+  .cal-event.tulasi-hl .cal-event-title{color:#78350f}
+  .cal-event.tulasi-hl b{color:#b45309;background:#fef3c7;padding:0 4px;border-radius:3px}
+
+  /* 素材占位 */
+  .placeholder-box{border:2px dashed #cbd5e1;border-radius:12px;background:#f8fafc;
+    padding:36px;text-align:center;color:var(--muted);font-size:14px;line-height:1.9}
+  .placeholder-box .ph-title{font-size:16px;font-weight:700;color:var(--ink-2);margin-bottom:8px}
+  .placeholder-box .ph-icon{font-size:28px;margin-bottom:6px}
+
+  /* 未来方向 */
+  .direction-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px}
+  .direction-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+    position:relative;border-top:3px solid var(--brand)}
+  .direction-card .n{font-size:11px;color:var(--brand);font-weight:700;letter-spacing:1px}
+  .direction-card h4{margin:6px 0 8px;font-size:15px}
+  .direction-card p{margin:0;font-size:13px;color:var(--ink);line-height:1.7}
+  .direction-card p b{background:linear-gradient(180deg,transparent 60%,#fef08a 60%);padding:0 3px}
+
+  footer{margin-top:36px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="tag">数码家电 · 手机配件 · Q2 季度复盘</span>
+    <h1>图拉斯 · 2026 Q2 复盘</h1>
+    <div class="sub">Q2 消耗 67.6 万元 · ROI 3.05 · 直播主引擎 60.3 万 · 小店闭环 7.3 万 —— 双链路盘点、同行对标、Q3 打法</div>
+    <div class="meta">
+      <span>周期：2026.04.01 – 06.30（91 天）</span>
+      <span>客户集团：图拉斯</span>
+      <span>数据来源：BI · 通用分析数据集 356 / 357</span>
+      <span><a href="https://adata.woa.com/bi/view/new/g:biz_main_multiple:log_time?s=1PaRn1" target="_blank">📊 取数链接</a></span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="k">Q2 总消耗</div>
+      <div class="v">67.6<small>万元</small></div>
+      <div class="d">直播 60.3 万 + 小店 7.3 万</div>
+    </div>
+    <div class="kpi">
+      <div class="k">下单 ROI（加权）</div>
+      <div class="v">3.05</div>
+      <div class="d">优于同行主要客户</div>
+    </div>
+    <div class="kpi">
+      <div class="k">CTR（视频号直播）</div>
+      <div class="v">2.56<small>%</small></div>
+      <div class="d warn">对比大盘有优化空间</div>
+    </div>
+    <div class="kpi">
+      <div class="k">有消耗展开创意数</div>
+      <div class="v">38,456<small>条</small></div>
+      <div class="d">TID 级 · 直播 3.7 万 + 小店 0.07 万</div>
+    </div>
+    <div class="kpi">
+      <div class="k">小店 ROI（亮点）</div>
+      <div class="v">3.90</div>
+      <div class="d">同行小店 Top 中最高，CVR 8.82%</div>
+    </div>
+  </div>
+
+  <!-- ========== 1. 基础情况 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">01</span><h2>基础情况：Q2 整体消耗 &amp; ROI 趋势</h2>
+      <span class="sub">日粒度 · 数据源 356</span>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <b style="font-size:14px">1.1 · 整体消耗 &amp; ROI 趋势</b>
+        <span style="font-size:12px;color:var(--muted)">左轴：日消耗（元）｜右轴：下单 ROI</span>
+      </div>
+      <div class="chart-box tall"><canvas id="chart_all"></canvas></div>
+      <div class="callout">
+        <b>整体节奏 · 三个核心事实：</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>① 下单 ROI 稳</b>：Q2 全期加权 <b>3.05</b>，稳定运行在 2.5~3.5 区间，从 4 月到 6 月没出现失控日。</li>
+          <li><b>② 日消耗量级已上台阶</b>：4 月日均 <b>5,261</b> · 5 月日均 <b>5,482</b> · <b>6 月日均跃升到 11,592（环比 +112%）</b>，最近 14 天日均 <b>11,485</b>，<b>已稳定在 1w+ 区间</b>。</li>
+          <li><b>③ 天花板还没打开</b>：6 月单日 <b>最高 1.9 万</b>、最低仍能到 5,351 元 —— <b>ROI 稳的前提下，量级还有放大空间</b>。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:14px">
+      <!-- 1.2 直播链路趋势 -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+          <b style="font-size:14px">1.2 · 直播链路 · 消耗 / ROI / CTR / CVR / 展开创意数</b>
+          <span class="badge">主引擎 60.3 万</span>
+        </div>
+        <div class="chart-box"><canvas id="chart_live"></canvas></div>
+        <div class="callout ok" style="margin-top:8px;font-size:12.5px">
+          <b>直播链路 · 三点需要关注：</b>
+          <ul class="bullets" style="margin:6px 0 0">
+            <li><b>⚠ CTR 有下降趋势</b>：5 月加权 <b>2.35%</b> → 6 月加权 <b>2.08%</b>，最近 30 天视频号版位仅 <b>2.56%</b> —— 素材"越跑越不新鲜"，需及时进新素材（对应 3.4 素材换向）。</li>
+            <li><b>⚠ 展开创意量波动大</b>：日线波动明显（部分日在 200 条以下），说明<b>入库节奏不稳</b>，需要拉平"每日新增创意"的节奏，避免出现"素材枯竭日"。</li>
+            <li><b>✅ 浅层 CVR 有提升趋势</b>：4-5 月 <b>5.2%</b> → 6 月 <b>6.75%</b>（+30%）—— <b>直播间讲品 / 挂车 / 承接优秀</b>，只要 CTR 端能拉到更精准的人群，转化端已经在等着承接。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 1.3 小店链路趋势 -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+          <b style="font-size:14px">1.3 · 小店链路 · 消耗 / ROI / CTR / CVR / 展开创意数</b>
+          <span class="badge ok">闭环 ROI 3.90</span>
+        </div>
+        <div class="chart-box"><canvas id="chart_shop"></canvas></div>
+        <div class="callout" style="margin-top:8px;font-size:12.5px;background:#fff9e6;border-color:#f59e0b">
+          <b>小店链路 · 近期量级明显抬升：</b>
+          <ul class="bullets" style="margin:6px 0 0">
+            <li><b>📈 6 月消耗跃升</b>：4 月合计 1.6 万（日均 535）· 5 月 1.1 万（日均 357）· <b>6 月合计 4.6 万（日均 1,524，环比 +327%）</b>；最近 14 天日均 1,520 元。</li>
+            <li><b>✅ 效率仍然领先</b>：ROI <b>3.90</b> / 浅层 CVR <b>8.82%</b> / CTR <b>2.66%</b> 全部优于直播 —— 抬量没伤 ROI，Q3 可继续放。</li>
+            <li><b>🎯 Q3 主抓手 · 重点补 ADQ 量级</b>：小店 ROI 3.98 是同行 Top1（357 数据），但绝对体量（6.5 万）只有头部 1/10 —— <b>Q3 重点抬 ADQ 侧预算</b>（配合 3.1 素材基建、3.2 优化目标切浅层），目标日均从 1,500 → <b>5,000+</b>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.4 分产品表现 -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+        <b style="font-size:14px">1.4 · 直播 &amp; 小店 分产品表现（非智投 / 智投 / 全域通）</b>
+        <span style="font-size:12px;color:var(--muted)">已合并：单链路智投 = 单链路智投 + 推直播；全域通 = 全域通直播/直购/全店托管</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>链路</th><th>产品类型</th><th>消耗(万)</th><th>占链路 %</th><th>ROI</th><th>CTR</th><th>浅层 CVR</th><th>展开创意</th><th>结论</th>
+          </tr>
+        </thead>
+        <tbody id="tbl_zhitou"></tbody>
+      </table>
+      <div class="highlight-callout">
+        <b>核心动作 · Q3 三件事：</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>小店 ADQ · 非智投 + 智投均有放大空间</b>：小店 ADQ 侧（非智投 0.7 万 + 智投类合计 6.6 万）当前体量都不大 —— 非智投 CTR/CVR 全表最高、智投已跑通，都是"抬预算 ROI 不掉"的场景，可同步放大。</li>
+          <li><b>直播 · 单链路智投持续投放</b>：36.7 万 已是直播主力盘（占 61%），ROI 2.92 稳定，Q3 <b>持续投放不掉档</b>。</li>
+          <li><b>新增大节点专场放量工具</b>：七夕 / 双 11 蓄水等大节点，叠加<b>大场速推 / 潜客优投</b>等专场放量工具刺激提量，把日消耗天花板从 2 万 → 3 万+。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 2. 同行对比 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">02</span><h2>同行对比：手机配件品类 · 直播 &amp; 小店双链路对标</h2>
+      <span class="sub">数据源 357 · 消耗 ≥ 2 万 客户集团</span>
+    </div>
+
+    <!-- 2.1 直播链路对比 -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+        <b style="font-size:14px">2.1 · 直播链路 · 同行 Top 客户集团</b>
+        <span style="font-size:12px;color:var(--muted)">图拉斯高亮 · 涂色代表本行相对最优 / 最弱</span>
+      </div>
+      <table class="brand-table">
+        <thead>
+          <tr>
+            <th>客户集团</th><th>消耗区间</th><th>ROI</th><th>CTR</th><th>浅层 CVR</th>
+            <th>进播率</th><th>商品点击</th><th>下单率</th><th>展开创意</th>
+          </tr>
+        </thead>
+        <tbody id="tbl_peers_live"></tbody>
+      </table>
+      <div class="callout">
+        <b>直播链路结论 —— 图拉斯 vs 南孚（同量级最强对手）：</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>消耗量级：</b>图拉斯与南孚同属 <b>50-60 万</b>区间，领跑手机配件品类。</li>
+          <li><b>ROI：</b>图拉斯 <b>2.95</b> vs 南孚 2.60，<b>ROI 高 13%</b>，赚得更稳。</li>
+          <li class="warn" style="color:var(--warn)"><b>⚠ CTR 明显落后：</b>图拉斯 2.11% vs 南孚 3.25%（<b>-35%</b>）、闪影 3.16%、菏泽 1.63% —— <b>CTR 是当前 Q3 的 1 号课题</b>，主要瓶颈在素材开头/封面吸引力。</li>
+          <li><b>浅层 CVR：</b>图拉斯 5.98% vs 南孚 4.42%（<b>+35%</b>），承接与卖点解释能力强。</li>
+          <li><b>直播漏斗商品点击率：</b>图拉斯 <b>89.0%</b>（同行 Top）—— 主播讲品/挂车效率显著高于南孚 70%、菏泽 48%。</li>
+          <li><b>展开创意数：</b>图拉斯 3.7 万 vs 南孚 4.0 万，基本追平；但 <b>南孚展开创意与 CTR 兼得</b>，图拉斯需要"堆量的同时抬 CTR"。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2.2 小店链路对比 -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+        <b style="font-size:14px">2.2 · 小店链路 · 同行 Top 客户集团（重点看 CTR / CVR / 漏斗 / 素材）</b>
+        <span class="badge warn">小店直播漏斗大部分客户为 0，仅几家有数据</span>
+      </div>
+      <table class="brand-table">
+        <thead>
+          <tr>
+            <th>客户集团</th><th>消耗区间</th><th>ROI</th><th>CTR</th><th>浅层 CVR</th>
+            <th>展开创意</th><th>有消耗广告数</th>
+          </tr>
+        </thead>
+        <tbody id="tbl_peers_shop"></tbody>
+      </table>
+      <div class="callout warn">
+        <b>小店链路结论 —— 图拉斯"体量小但质量高"，Q3 主要是抬体量：</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>消耗量级：</b>图拉斯处于 <b>5-10 万</b> 区间，头部同行普遍在 <b>10-30 万</b> 区间 —— <b>小店消耗天花板远远没打开</b>。</li>
+          <li><b>ROI：</b>图拉斯 <b>3.98 全表第一</b>（南孚 3.88、恒昇盛业 3.63、聚恒盈 2.90、梦为 2.28）—— 意味着现在再压体量也不会明显拉低 ROI，<b>Q3 敢加预算</b>。</li>
+          <li class="warn" style="color:var(--warn)"><b>⚠ CTR：</b>图拉斯 2.51% vs 聚恒盈 3.36% / 梦为 2.82% / 绿联 3.95% / 简朴人 3.29% —— <b>小店 CTR 也弱于同行</b>，与直播是同一个问题：素材开头 &amp; 封面吸引力。</li>
+          <li class="warn" style="color:var(--warn)"><b>⚠ 浅层 CVR：</b>图拉斯 7.27% vs 聚恒盈 <b>11.44%</b>、湘潭雨湖 <b>13.68%</b>、恒昇盛业 9.43%、简朴人 9.16% —— 高 CVR 客户普遍在做"低单价+爆款单品聚焦"，图拉斯 SKU 太散导致 CVR 被稀释。</li>
+          <li><b>展开创意数：</b>图拉斯只有 <b>746 条</b>（广告 502 条）—— 相比恒昇盛业 6,091 条 / 聚恒盈 1,562 条 / 简朴人 1,571 条 / 绿联 1,835 条，<b>素材基建量差 2~8 倍</b>，是小店抬不起量的核心原因。</li>
+        </ul>
+      </div>
+      <div class="highlight-callout" style="margin-top:12px">
+        <b>💡 2 个可执行的直接抓手：</b>
+        ① Q3 小店广告基建 <b>目标 1,500~2,000 条</b>（对齐简朴人/聚恒盈量级）—— 每周批量入库 100+ 条；
+        ② 小店 SKU 聚焦在 <b>浅层 CVR &gt; 10%</b> 的爆款单品（手机壳、钢化膜、充电头），先做"3 个大爆款 + 长尾"的结构。
+      </div>
+    </div>
+
+    <!-- 2.3 视频号大盘头客对比 · 展开创意量差距 -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+        <b style="font-size:14px">2.3 · 视频号大盘头客对比 —— 展开创意量差距是重点</b>
+        <span style="font-size:12px;color:var(--muted)">数据源 415 · 近 30 天 · 视频号直播 + 小店</span>
+      </div>
+      <div style="font-size:12.5px;color:var(--ink-2);margin-bottom:10px;line-height:1.75">
+        跨类目对比大盘 Top10 客户集团（数码家电 + 教育 + 个护家电 + 艾灸 / 母婴等），核心看<b>投放规模 & 展开创意量</b>—— 图拉斯排名 <b>#45</b>，与头客的<b>创意基建差距</b>是最需要补的一项。
+      </div>
+      <table class="brand-table">
+        <thead>
+          <tr>
+            <th>排名</th><th>客户集团</th><th>日耗区间</th><th>展开创意</th><th>有消耗广告</th><th>账户数</th><th>ROI</th><th>CTR</th>
+          </tr>
+        </thead>
+        <tbody id="tbl_market_top"></tbody>
+      </table>
+      <div class="callout warn" style="margin-top:12px">
+        <b>展开创意量差距（Q3 最需补的短板）：</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>大盘 Top 10 客户</b>展开创意量 <b>平均约 30 万条</b>；</li>
+          <li><b>图拉斯</b>展开创意 <b>3.7 万条</b>（大盘头客的 <b>1/8</b>）—— 是最明显的"广告基建"体量差；</li>
+          <li>结合投放端截图（3.1 章）——单项目仅 3 条创意启用，说明<b>创意入库频率与放量不匹配</b>。</li>
+        </ul>
+        <b style="display:block;margin-top:8px">👉 Q3 创意基建目标：</b>
+        <ul class="bullets" style="margin:4px 0 0">
+          <li>展开创意从 <b>3.7 万</b> → <b>8~10 万</b> 条（对齐同量级手机配件同行 4 万起、再往头客靠一步）；</li>
+          <li>每周新入库创意 <b>30~50 条</b>，每个跑量项目下同时启用 <b>≥10 条</b>做优选；</li>
+          <li>结合 4+M 小店商品能力 → 每 SKU 关联下 <b>10~15 条</b>创意（详见 04.4+M 卡）。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 3. 优化目标 & 基建 & CTR & 人群画像 & 大盘参考 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">03</span><h2>核心课题：素材没贴合 40+ 熟龄女性，是 CTR 起不来的根因</h2>
+      <span class="sub">数据源 408/409/410/412 · 投放端截图</span>
+    </div>
+
+    <!-- 3.1 · 素材基建相对较少（截图证据） -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:14px;font-weight:700">3.1 · 素材基建相对较少</span>
+        <span class="badge bad">Q3 首要问题</span>
+      </div>
+      <div class="grid-2" style="grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <div style="font-size:12.5px;color:var(--ink-2);line-height:1.75;margin-bottom:10px">
+            近 1 周投放端仅 <b>9 个项目</b>在跑，且总花费只有 <b>8,095 元</b>（截图 1），头部项目 6-26 测新（3,190 元）也只有 <b>7 条创意</b>，其中真正启用的仅 <b>3 条</b>（截图 2 红框）。
+          </div>
+          <div style="border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fafcff">
+            <img src="./images/adq_projects.png" alt="投放端项目列表" style="width:100%;display:block">
+            <div style="padding:6px 10px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line)">图 1 · 投放端项目列表 · 近 1 周仅 9 个项目 · 总消耗 8,095 元</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12.5px;color:var(--ink-2);line-height:1.75;margin-bottom:10px">
+            单项目下创意数量偏少，头部项目（6-26 测新 roi3.3）只有 <b>7 条创意</b>，仅 <b>3 条</b>处于启用中（红框），其他 4 条已暂停或未启动 —— <b>创意入库频率跟不上放量需要</b>。
+          </div>
+          <div style="border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fafcff">
+            <img src="./images/adq_creatives.png" alt="投放端创意列表" style="width:100%;display:block">
+            <div style="padding:6px 10px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line)">图 2 · 项目 6-26 测新 · 7 条创意仅 3 条启用（红框标出）</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout bad" style="margin-top:12px">
+        <b>结论 · 基建量的两层压力：</b>
+        <ol style="margin:6px 0 0 20px;padding:0;line-height:1.85">
+          <li><b>创意层级：</b>头部项目单项目只有 <b>3 条创意启用</b>，正常放量需要 <b>10+ 条</b>持续做 A/B 测试。</li>
+          <li><b>Q2 全季度</b>：小店链路只有 109 条素材，同类客户（简朴人 / 恒昇盛业）分别是 1,571 / 6,091 条，差距 <b>10~50 倍</b>。</li>
+        </ol>
+        <b style="display:block;margin-top:8px">👉 Q3 素材基建目标：</b>
+        <ul class="bullets" style="margin:4px 0 0">
+          <li>每周 <b>新入库 30~50 条创意</b>，每个跑量项目下同时启用 <b>≥10 条</b>创意做优选</li>
+          <li>小店链路素材数从 109 条 → <b>300+ 条</b>（Q3 内翻 3 倍）</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3.2 · 优化目标太深 -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:14px;font-weight:700">3.2 · 优化目标太深 · 用"下单"目标刺激起量</span>
+        <span class="badge warn">近 30 天数据源 410</span>
+      </div>
+      <div class="grid-2" style="grid-template-columns:1.05fr 1fr;gap:14px">
+        <!-- 表格 -->
+        <div>
+          <table>
+            <thead>
+              <tr><th>链路</th><th>优化目标</th><th>消耗</th><th>占比</th><th>ROI</th><th>CTR</th><th>浅层 CVR</th></tr>
+            </thead>
+            <tbody>
+              <tr class="hl-row"><td rowspan="2"><b>直播</b><br><span style="font-size:11px;color:var(--muted)">共 29.0 万</span></td>
+                <td><span class="badge warn">下单 → 下单 ROI（深）</span></td><td class="num">26.0 万</td><td class="num up">89.7%</td><td class="num">2.96</td><td class="num">1.89%</td><td class="num">6.60%</td></tr>
+              <tr class="hl-row"><td><span class="badge ok">下单（浅）</span></td><td class="num down">3.0 万</td><td class="num down">10.3%</td><td class="num">3.00</td><td class="num">1.79%</td><td class="num">3.84%</td></tr>
+              <tr><td rowspan="2"><b>小店</b><br><span style="font-size:11px;color:var(--muted)">共 4.4 万</span></td>
+                <td><span class="badge warn">下单 → 下单 ROI（深）</span></td><td class="num">3.9 万</td><td class="num up">88.4%</td><td class="num">3.75</td><td class="num">1.73%</td><td class="num">3.71%</td></tr>
+              <tr><td><span class="badge ok">下单（浅）</span></td><td class="num down">0.5 万</td><td class="num down">11.6%</td><td class="num">3.61</td><td class="num">4.89%</td><td class="num up">7.85%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- 柱状图 + 结论 -->
+        <div>
+          <div class="chart-box" style="height:220px"><canvas id="chart_opt"></canvas></div>
+          <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:4px">直播 / 小店 · 优化目标占比对比</div>
+        </div>
+      </div>
+      <div class="callout warn" style="margin-top:12px">
+        <b>问题：优化目标太深，可能限制起量</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li>直播 / 小店 <b>「下单 ROI（深）」目标</b>合计占比 <b>≈89%</b>（消耗），学习门槛高、放量慢；</li>
+          <li>相比之下 <b>「下单（浅）」目标</b>只占 <b>10.3% / 11.6%</b>，用得极少 —— 而其 CTR / CVR 均显著更好（小店场景 CTR 4.89%、CVR 7.85%）；</li>
+          <li>ROI 层面两者几乎一致（直播 2.96 vs 3.00；小店 3.75 vs 3.61），<b>切换到浅层目标不会伤 ROI</b>。</li>
+        </ul>
+        <b style="display:block;margin-top:8px">👉 Q3 目标结构调整建议：</b>
+        <ul class="bullets" style="margin:4px 0 0">
+          <li>「下单（浅）」目标占比 <b>10% → 30~40%</b>，用来跑冷启动、承接新素材、扩流；</li>
+          <li>「下单 ROI（深）」目标控制在 <b>≤ 60%</b>，只在成熟广告 / 稳期使用；</li>
+          <li>预期效果：整体消耗天花板抬 <b>20~30%</b>，ROI 维持 3.0+ 不变。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3.3 · 人群画像 —— 先亮"用户到底是谁" -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:14px;font-weight:700">3.3 · 图拉斯真实下单人群 —— 40+ 熟龄 / 银发女性</span>
+        <span class="badge bad">核心事实</span>
+        <span class="badge">近 30 天数据源 408 / 409</span>
+      </div>
+      <div class="grid-2" style="grid-template-columns:1fr 1.35fr;gap:16px">
+        <div>
+          <b style="font-size:13px;display:block;margin-bottom:6px">性别分布（下单消耗占比）</b>
+          <div class="chart-box" style="height:220px"><canvas id="chart_gender"></canvas></div>
+          <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:4px">女 <b style="color:var(--bad)">74.1%</b> · 男 4.1% · 未知 21.8%</div>
+        </div>
+        <div>
+          <b style="font-size:13px;display:block;margin-bottom:6px">年龄区间分布（下单消耗占比）</b>
+          <div class="chart-box" style="height:220px"><canvas id="chart_age"></canvas></div>
+          <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:4px">40+ 合计 <b style="color:var(--bad)">87.4%</b> · 45-49 岁最高 25.7%</div>
+        </div>
+      </div>
+      <div class="callout bad" style="margin-top:12px">
+        <b>📌 请先记住这个事实：图拉斯在视频号下单的人 —— 不是"25 岁数码男性"，而是"40-55 岁女性 / 银发人群"。</b>
+        <ul class="bullets" style="margin:6px 0 0">
+          <li><b>性别</b>：女性下单消耗占 <b>74.1%</b>，男性仅 <b>4.1%</b>（21.8% 未知也大概率女性）。</li>
+          <li><b>年龄</b>：40-44 岁 20.7% + 45-49 岁 25.7% + 50-54 岁 22.0% + 55+ 合计 19.0% = <b>40 岁以上合计 87.4%</b>；35 岁以下仅 3.4%。</li>
+          <li><b>年龄越大越买账</b>：CTR 从 40-44 岁 2.06% → 60-64 岁 <b>3.97%</b> → 65+ <b>4.49%</b> 稳步上升；ROI 60-64 岁最高（3.46）。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3.4 · 人群 vs 素材错位 —— 这是 CTR 低的根因 -->
+    <div class="card" style="margin-top:14px;border:2px solid #dc2626;background:linear-gradient(180deg,#fff5f5 0%,#ffffff 60%)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:16px;font-weight:700;color:#b91c1c">3.4 · 关键判断 · 素材没贴合 40+ 女性 → CTR 起不来</span>
+      </div>
+      <div style="font-size:13.5px;color:var(--ink-2);line-height:1.85">
+        视频号版位图拉斯 CTR = <b>2.56%</b>，比<b>大盘头客水位（3.07%）低 17%</b>、比同行南孚 3.25% 低 21% <b>—— 差距不在人群定向（人群本身买账），而在素材表达和目标人群诉求不匹配</b>。
+      </div>
+      <div class="grid-2" style="grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+        <!-- 现状（图拉斯 Top 素材调性） -->
+        <div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px">
+          <div style="font-size:13px;font-weight:700;color:#b91c1c;margin-bottom:8px">❌ 现状：素材仍是"数码男性"审美</div>
+          <ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2);line-height:1.8">
+            <li>Top 素材主角：AirPods / 车充 / 数据线的<b>产品叠加展示</b>，主播多为<b>年轻男性讲解员</b>；</li>
+            <li>开场话术：<b>"100W 快充"、"氮化镓 GaN"、"PD3.1 协议"</b> —— 数码男性术语；</li>
+            <li>场景：写字楼白领通勤、健身、AirPods 生态展示 —— 25 岁数码用户偏好；</li>
+            <li><b>结果</b>：CTR 仅 2.56%，40-54 岁女性主力人群 CTR 只有 2.06~2.35%，明显低于 60+ 银发人群（3.97~4.49%）。</li>
+          </ul>
+        </div>
+        <!-- 期望方向（学大盘） -->
+        <div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px">
+          <div style="font-size:13px;font-weight:700;color:var(--ok);margin-bottom:8px">✅ 应向：40+ 熟龄女性诉求靠</div>
+          <ul style="margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-2);line-height:1.8">
+            <li>主角：<b>40-55 岁女性 / 熟龄妈妈 / 婆婆</b> —— 用户看见自己；</li>
+            <li>话术：<b>"给父母 / 大字体屏幕 / 老花看得清 / 一键开机 / 送闺蜜 / 装孙子行李"</b>；</li>
+            <li>场景：<b>家里给孙辈用、送父母出门、旅游给自己带</b>；</li>
+            <li>SKU 侧重：<b>大字屏充电宝 / 大按键遥控器 / 挂脖移动电源 / 送礼礼盒装</b>。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="highlight-callout" style="margin-top:12px">
+        <b>💡 一句话总结：<span style="background:#fef08a;padding:1px 6px">用户是 40+ 女性，素材还在讲 25 岁男性数码梗</span> —— 这不是 CTR 优化的技术问题，是"素材是否说到用户心里去"的问题。Q3 素材换向后，向大盘头客 3%+ 水位靠拢。</b>
+      </div>
+    </div>
+
+    <!-- 3.5 · 大盘 Top 素材参考 -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:14px;font-weight:700">3.5 · 大盘 Top 跑量素材参考 —— 都在讲 40+ 女性的话</span>
+        <span class="badge">数据源 412 · 数码家电大盘</span>
+      </div>
+      <div class="callout" style="margin-top:0">
+        <b>为什么这些素材跑得起来？</b>下方 10 条是数码家电大盘消耗 Top 素材（跨老花镜 / 艾灸 / 洗地机 / 烘干机 / 按摩仪 / 吸尘器），共同点：<b>主角是 40+ 女性 / 熟龄妈妈；开场直击"老花看不清 / 腰酸背痛 / 家里干净 / 出行方便"这些熟龄女性的真实痛点。</b>这就是图拉斯的用户想听的话 —— 直接把这些素材结构 / 开场话术 / 卖点做<b>结构性迁移</b>。
+      </div>
+      <div id="market_top_grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px"></div>
+
+      <div class="highlight-callout" style="margin-top:14px">
+        <b>💡 Q3 素材迁移方向（对齐大盘头部客户 · 都是给 40+ 女性看的）：</b>
+        <ol style="margin:6px 0 0 20px;padding:0;line-height:1.85">
+          <li><b>老花镜赛道（美满净界个护）</b>60 万+ 消耗 · Top1 CTR 3.68% —— <b>学"年纪大了看不清小字"痛点开场</b>；图拉斯可迁移到<b>"充电宝上大字屏 / 老花看得清电量"</b>；</li>
+          <li><b>艾灸/按摩赛道（曙艾 / 双龙脉 / 蜗艾）</b>60 万+ 消耗 · ROI 4.61~5.40 —— <b>学"腰酸背痛 / 妈妈亲测"人设</b>；图拉斯可迁移到<b>"给父母买 / 我妈说好用"人设</b>；</li>
+          <li><b>清洁电器赛道（添可 / 冠轩 / 康佳）</b>80 万+ 消耗 · 添可 CTR 3.09% —— <b>学"家里主妇痛点 + 效果对比"结构</b>；图拉斯可迁移到<b>"孙子在客厅玩手机 / 一键给全家的充电站"</b>场景；</li>
+          <li><b>烘干机赛道（庸小白 / TIJUMP）</b>40 万+ 消耗 · CTR 2.19~3.05% —— <b>学"季节 + 便携出行"故事开头</b>；图拉斯可迁移到<b>"出门旅游 / 高铁上 / 姐妹淘"</b>场景。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 3.6 · CTR 对比大盘 -->
+    <div class="card" style="margin-top:14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:14px;font-weight:700">3.6 · CTR 对标大盘头客 · 有 3%+ 的合理水位空间</span>
+        <span class="badge">当前 CTR = 2.56% · 目标 3.0%+</span>
+      </div>
+      <div class="grid-2" style="grid-template-columns:1fr 1.2fr;gap:16px">
+        <div class="chart-box" style="height:220px"><canvas id="chart_ctr"></canvas></div>
+        <div style="font-size:13px;color:var(--ink-2);line-height:1.75">
+          <b>与大盘头客对比：</b>
+          <ul class="bullets" style="margin:4px 0 8px">
+            <li>图拉斯（视频号直播）CTR = <b>2.56%</b></li>
+            <li><b>大盘头客</b>（数码家电 Top20 消耗客户加权）CTR = <b style="color:var(--bad)">3.07%</b></li>
+            <li><b>头部素材</b>（Top20 消耗素材加权）CTR = <b style="color:var(--bad)">3.15%</b></li>
+            <li>同行南孚（直播链路）CTR = <b>3.25%</b></li>
+          </ul>
+          <b>解读：</b>图拉斯 CTR 比<b>大盘头客中位（3.07%）低 <span class="up">17%</span></b>，比南孚（3.25%）低 21%。头客普遍能到 <b>3%+</b>，说明这是数码家电赛道<b>可达到的合理水位</b>；图拉斯没到，本质是<b>素材"人群适配"问题</b>（见 3.4）—— 素材真正说到 40+ 女性的诉求上，CTR 就会跟着上来。
+          <div class="callout" style="margin-top:12px">
+            <b>👉 Q3 目标 CTR：2.56% → 3.0%+</b>（对齐大盘头客 3.07% 水位）。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.6 · 简化后的自身素材参考 -->
+    <details style="margin-top:14px">
+      <summary style="cursor:pointer;font-size:13px;color:var(--muted);padding:8px 12px;background:#f8fafc;border-radius:8px;border:1px solid var(--line)">📎 图拉斯自身素材参考（可展开 · Q2 Top 15 直播 + Top 10 小店）</summary>
+      <div class="card" style="margin-top:10px">
+        <div style="font-size:12.5px;color:var(--ink-2);margin-bottom:8px;line-height:1.7">
+          Q2 图拉斯直播 990 条素材、10 条头部撑 48% 消耗；Top 素材（<code>6cd7394d</code>）为 <b>AirPods + 图拉斯配件 生态场景</b>，用户仍偏"数码男性"审美 —— 与 3.4 人群画像（40+ 女性）<b>严重错位</b>，这也是 CTR 只有 2.56% 的核心原因。
+        </div>
+        <div id="creatives_live" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px"></div>
+        <b style="font-size:13px;display:block;margin-top:14px">小店 Top 素材</b>
+        <div id="creatives_shop" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:8px"></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ========== 4. 产品应用推荐 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">04</span><h2>产品应用推荐：Q3 四款新产品能力 · 抬量 &amp; 抬 ROI 抓手</h2>
+      <span class="sub">数码家电已跑通产品能力</span>
+    </div>
+
+    <div class="highlight-callout">
+      <b>📢 匹配图拉斯 Q2 三大痛点的产品能力：</b>① <b>素材基建量少（周投项目 9 个 / 单项目仅 3 条创意启用）</b> → 潜客优投放大有限素材效果；② <b>优化目标过深（"下单 ROI" 占 89%）</b> → 配合"下单"目标 + 潜客优投抬起量；③ <b>小店消耗天花板未打开（5-10 万区间 vs 头部 20-30 万）</b> → 4+M 小店商品聚合，扩基建、破冷启动。
+    </div>
+
+    <div class="product-cards" style="margin-top:14px">
+      <!-- 卡1 潜客优投 -->
+      <div class="prod-card" style="border-left:4px solid #7c3aed">
+        <div class="prod-head">
+          <span class="prod-icon" style="background:#f3ecff;color:#7c3aed">🎯</span>
+          <div class="prod-titles">
+            <div class="prod-name" style="color:#7c3aed">潜客优投</div>
+            <div class="prod-sub">3.0+AIM ｜ 直播 &amp; 小店直购通用 ｜ 潜力用户触达</div>
+          </div>
+        </div>
+        <div class="prod-value">
+          <b>核心价值：</b>系统识别对商品/直播间感兴趣的高潜用户，通过<b>提价系数</b>对高潜人群精准提价 —— <b>直接解决图拉斯 CTR 弱的问题</b>：让有限的好素材优先触达高转化人群。
+        </div>
+
+        <!-- 图拉斯自身实测 · 潜客优投 ROI 显著更好 -->
+        <div style="background:#f3ecff;border:1px solid #d8c7ff;border-radius:8px;padding:10px 12px;margin-top:2px">
+          <div style="font-size:11.5px;font-weight:700;color:#7c3aed;margin-bottom:6px">📊 图拉斯近 30 天实测（数据源 413）· 效果显著优于整体</div>
+          <table style="font-size:11.5px;margin:0">
+            <thead><tr><th>出价方式</th><th>消耗占比</th><th>ROI</th><th>CTR</th><th>浅层 CVR</th></tr></thead>
+            <tbody>
+              <tr class="hl-row" style="background:#faf7ff"><td><b style="color:#7c3aed">潜客优投</b></td><td class="num">1.75%</td><td class="num up">3.93</td><td class="num up">4.61%</td><td class="num up">7.63%</td></tr>
+              <tr><td>其他出价方式</td><td class="num up">98.25%</td><td class="num">2.95</td><td class="num">2.20%</td><td class="num">7.62%</td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:11.5px;color:#5b21b6;margin-top:6px;line-height:1.6">
+            <b>👉 潜客优投 ROI <span style="background:#fef08a;padding:1px 4px">3.93 vs 整体 2.95（+33%）</span>、CTR 4.61% vs 2.20%（+108%）</b>—— 但目前使用占比仅 <b>1.75%</b>，Q3 可从 1.75% 抬到 <b>10~20%</b>，直接放大跑通效果。
+          </div>
+        </div>
+
+        <div class="prod-scene">
+          <div class="prod-scene-k">Q3 加大使用建议</div>
+          <ul>
+            <li><b>① 新广告起量：</b>正常出价，提价系数 <b>1.1~1.2</b>；直播链路智投主号先开。</li>
+            <li><b>② 提升 ROI：</b>原始出价降 20% 以内，提价系数 <b>1.2~1.3</b>，小店链路继续放大。</li>
+            <li><b>③ 稳定长期使用：</b>出价保持，系数 <b>1~1.1</b>，配合非智投做底盘。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 卡2 4+M小店商品聚合 -->
+      <div class="prod-card" style="border-left:4px solid #0ea5e9">
+        <div class="prod-head">
+          <span class="prod-icon" style="background:#e0f2fe;color:#0ea5e9">🧩</span>
+          <div class="prod-titles">
+            <div class="prod-name" style="color:#0ea5e9">4+M 小店商品 &amp; 商品聚合页</div>
+            <div class="prod-sub">关联商品模型 ｜ 已跑通 · Q3 扩充基建</div>
+          </div>
+        </div>
+        <div class="prod-value">
+          <b>核心价值：</b>把广告与<b>小店商品/详情页做模型关联</b>，系统提前"知道"卖什么，起量更稳、跑飞概率下降 —— <b>直接扩充小店基建量</b>（图拉斯小店当前 746 条素材 vs 恒昇盛业 6,091 条）。
+        </div>
+
+        <!-- 图拉斯自身实测 · 4+M 已是小店主力 -->
+        <div style="background:#e0f2fe;border:1px solid #a5d8f5;border-radius:8px;padding:10px 12px;margin-top:2px">
+          <div style="font-size:11.5px;font-weight:700;color:#0ea5e9;margin-bottom:6px">📊 图拉斯近 30 天实测（数据源 414）· 已经跑通、还有基建扩充空间</div>
+          <table style="font-size:11.5px;margin:0">
+            <thead><tr><th>推广产品库类型</th><th>消耗占比</th><th>下单单价</th><th>CTR</th><th>浅层 CVR</th></tr></thead>
+            <tbody>
+              <tr class="hl-row" style="background:#f0f9ff"><td><b style="color:#0ea5e9">4+M 微信小店商品</b></td><td class="num up">82.96%</td><td class="num">370 元</td><td class="num">2.20%</td><td class="num up">8.21%</td></tr>
+              <tr><td>视频号直播（默认）</td><td class="num">17.04%</td><td class="num">369 元</td><td class="num up">2.38%</td><td class="num">6.54%</td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:11.5px;color:#0369a1;margin-top:6px;line-height:1.6">
+            <b>👉 4+M 小店商品已是主力（占 82.96%）—— <span style="background:#fef08a;padding:1px 4px">CVR 8.21% 比默认高 26%</span></b>，说明"商品关联模型"效果好。Q3 抓手是 <b>扩充关联 SKU 数 + 每 SKU 下的创意数</b>：从当前 746 条素材扩到 <b>1,500+</b>，把这个"已跑通"能力真正用起来。
+          </div>
+        </div>
+
+        <div class="prod-scene">
+          <div class="prod-scene-k">Q3 扩充基建建议</div>
+          <ul>
+            <li><b>① 主推 SKU 全覆盖：</b>手机壳 / 钢化膜 / 充电头 / 移动电源 全部完成商品关联。</li>
+            <li><b>② 每 SKU 创意扩容：</b>每个主推 SKU 下入库 <b>10~15 条</b>创意（当前平均 &lt;5 条）。</li>
+            <li><b>③ 大场前置：</b>七夕/双 11 大场前 1 周，新 SKU 完成模型预热。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 卡3 大场速推 -->
+      <div class="prod-card" style="border-left:4px solid #f59e0b">
+        <div class="prod-head">
+          <span class="prod-icon" style="background:#fef3c7;color:#b45309">🚀</span>
+          <div class="prod-titles">
+            <div class="prod-name" style="color:#b45309">大场速推</div>
+            <div class="prod-sub">节点冲刺 ｜ 快速起量 ｜ 七夕 / 双 11 大场</div>
+          </div>
+        </div>
+        <div class="prod-value">
+          <b>核心价值：</b>节点大场当天，让新素材/新广告在 <b>2~4 小时内完成学习期</b>并快速起量，避免"大场当天素材还在学习"的失血。
+        </div>
+        <div class="prod-scene">
+          <div class="prod-scene-k">图拉斯适配场景</div>
+          <ul>
+            <li><b>① 七夕大场：</b>0815-0822 情侣/送礼场景大场，主推手机壳礼盒 + 车载香薰。</li>
+            <li><b>② 双 11 大场：</b>10 月末 - 11 月初，全类目冲刺。</li>
+            <li><b>③ 蓄水期：</b>提前 5~7 天做素材蓄水，大场当天用速推快速裂变跑量素材。</li>
+          </ul>
+        </div>
+        <div class="prod-case">💡 <b>蓄水/冲刺/返场三阶段</b>节奏：蓄水期测素材、冲刺期速推裂变、返场期切片混剪稳 ROI —— 大促节点通用打法可复用。</div>
+      </div>
+    </div>
+
+    <div class="callout ok" style="margin-top:14px">
+      <b>Q3 产品动作清单：</b>① <b>潜客优投</b> 使用占比从 1.75% → <b>10~20%</b>，起量 1.1~1.2、冲 ROI 1.2~1.3；② <b>4+M 小店商品</b> 主推 SKU 全部关联，每 SKU 创意扩至 10~15 条；③ <b>大场速推</b> 七夕 / 双 11 大场当天开启。
+    </div>
+  </section>
+
+  <!-- ========== 5. 未来节点日历 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">05</span><h2>未来节点日历 · 哪些节点适配图拉斯</h2>
+      <span class="sub">7~10 月 · 数码家电大促节点</span>
+    </div>
+
+    <div class="highlight-callout">
+      <b>🎯 图拉斯 Q3 三大核心抓手：</b>① <b>七夕（0815-0822 情侣/送礼）</b>—— 手机壳礼盒 / 情侣款 / 车载香薰全命中；② <b>假期出游（07 月）</b>—— 充电宝 / 车载配件 / 移动电源 强命中；③ <b>开学季（0825-0910）</b>—— 手机壳/钢化膜/贴膜换机潮次爆发；④ <b>双 11 蓄水（10 月）</b>—— 全类目提前入库。
+    </div>
+
+    <div class="cal-wrap" style="margin-top:14px">
+      <table class="cal-table">
+        <thead>
+          <tr>
+            <th style="width:78px">分类 \ 月份</th>
+            <th class="cal-month cal-m7">7 月</th>
+            <th class="cal-month cal-m8">8 月</th>
+            <th class="cal-month cal-m9">9 月</th>
+            <th class="cal-month cal-m10">10 月</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cal-cat"><div class="cal-cat-icon">🎯</div><div class="cal-cat-name">节日节点</div><div class="cal-cat-sub">货盘方向</div></td>
+            <td class="cal-cell cal-c7">
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">0701 – 0731</div><div class="cal-event-title">🔥 假期出游 · 数码配件强命中</div><div class="cal-event-desc"><b>充电宝、移动电源、车载香薰、车载支架、蓝牙耳机</b> —— 图拉斯主推品类全部命中</div></div>
+              <div class="cal-event"><div class="cal-event-date">0715 – 0730</div><div class="cal-event-title">三伏（初伏+中伏）</div><div class="cal-event-desc">高温相关：车载散热、便携风扇 —— 弱相关</div></div>
+            </td>
+            <td class="cal-cell cal-c8">
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">0815 – 0822</div><div class="cal-event-title">💘 七夕 · 情侣/送礼场景</div><div class="cal-event-desc"><b>手机壳礼盒、情侣款、AirTag 保护套、车载香薰礼盒</b> —— 主抓手，SKU 提前 2 周入库</div></div>
+              <div class="cal-event"><div class="cal-event-date">0814 – 0823</div><div class="cal-event-title">三伏（末伏）</div><div class="cal-event-desc">弱相关，可略</div></div>
+            </td>
+            <td class="cal-cell cal-c9">
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">0825 – 0910</div><div class="cal-event-title">🎒 开学季 · 换机潮</div><div class="cal-event-desc"><b>手机壳、钢化膜、贴膜、耳机、支架</b> —— 图拉斯核心品类全部命中，学生党价格带高度匹配</div></div>
+              <div class="cal-event"><div class="cal-event-date">0910 – 0920</div><div class="cal-event-title">📱 iPhone 18 发布预热</div><div class="cal-event-desc"><b>新机保护壳/膜首发</b>，图拉斯品牌力优势场景，抢首发权益</div></div>
+              <div class="cal-event"><div class="cal-event-date">0925</div><div class="cal-event-title">中秋礼盒</div><div class="cal-event-desc">送礼场景延伸，可承接七夕素材复用</div></div>
+            </td>
+            <td class="cal-cell cal-c10">
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">1001 – 1007</div><div class="cal-event-title">🚗 国庆出游</div><div class="cal-event-desc"><b>车载数码、充电宝、蓝牙耳机、K 歌音响</b> —— 出行场景强命中</div></div>
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">1015 – 1031</div><div class="cal-event-title">⭐ 双 11 蓄水期</div><div class="cal-event-desc">全类目素材入库、大场机制预热、优惠券装扮，<b>预算逐步抬升 30~50%</b></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="cal-cat"><div class="cal-cat-icon">🎪</div><div class="cal-cat-name">大场</div><div class="cal-cat-sub">展会 / 直播</div></td>
+            <td class="cal-cell cal-c7">
+              <div class="cal-event"><div class="cal-event-date">0723 – 0725</div><div class="cal-event-title">上海百货会</div></div>
+              <div class="cal-event"><div class="cal-event-date">0728 – 0729</div><div class="cal-event-title">杭州视频号爆品展播会</div></div>
+            </td>
+            <td class="cal-cell cal-c8">
+              <div class="cal-event"><div class="cal-event-date">0808 – 0809</div><div class="cal-event-title">广州视频号热招品牌展</div></div>
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">0815 – 0822</div><div class="cal-event-title">七夕专场大场</div><div class="cal-event-desc"><b>情侣礼盒专场</b> · 明星IP + 限定礼盒 + 大额全资券</div></div>
+            </td>
+            <td class="cal-cell cal-c9">
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">0910 – 0915</div><div class="cal-event-title">iPhone 18 首发直播场</div><div class="cal-event-desc">新机保护套/膜首发专场</div></div>
+              <div class="cal-event"><div class="cal-event-date">0920</div><div class="cal-event-title">开学季大场</div></div>
+            </td>
+            <td class="cal-cell cal-c10">
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">1020 – 1031</div><div class="cal-event-title">双 11 蓄水大场</div></div>
+              <div class="cal-event tulasi-hl"><div class="cal-event-date">1101 – 1111</div><div class="cal-event-title">双 11 冲刺</div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="cal-cat"><div class="cal-cat-icon">🎬</div><div class="cal-cat-name">素材方向</div><div class="cal-cat-sub">开头 3s</div></td>
+            <td class="cal-cell cal-c7">
+              <div class="cal-event"><div class="cal-event-title">出行场景</div><div class="cal-event-desc">机场/自驾/旅拍开场，痛点直给</div></div>
+            </td>
+            <td class="cal-cell cal-c8">
+              <div class="cal-event"><div class="cal-event-title">情侣/送礼</div><div class="cal-event-desc">拆礼盒仪式感、情侣双人试戴</div></div>
+            </td>
+            <td class="cal-cell cal-c9">
+              <div class="cal-event"><div class="cal-event-title">校园/新机</div><div class="cal-event-desc">宿舍开箱 · 学生日常</div></div>
+            </td>
+            <td class="cal-cell cal-c10">
+              <div class="cal-event"><div class="cal-event-title">出行 + 大促混剪</div><div class="cal-event-desc">高光切片、五段融入</div></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok" style="margin-top:14px">
+      <b>三阶段执行 · 大促节点通用打法：</b>
+      <ul class="bullets" style="margin:6px 0 0">
+        <li><span class="badge">蓄水期</span> 节点前 14~5 天：<b>多素材测试</b>，测出节点相关跑量素材；<b>4+M 小店商品聚合</b> 提前关联；小店直播间布景切换。</li>
+        <li><span class="badge warn">冲刺期</span> 节点前 4 天~当日：<b>跑量素材裂变</b> + <b>大场速推</b> 起量；<b>潜客优投</b> 全量开启承接高潜流量。</li>
+        <li><span class="badge ok">返场期</span> 节点后 3 天：<b>直播高光切片混剪</b>；跑量素材持续优化；<b>稳定 ROI</b>。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 6. 未来方向 ========== -->
+  <section>
+    <div class="sec-title">
+      <span class="n">06</span><h2>未来方向：Q3 四条主线</h2>
+      <span class="sub">基于 Q2 数据 · 已可执行</span>
+    </div>
+
+    <div class="direction-grid">
+      <div class="direction-card" style="border-top-color:#dc2626">
+        <div class="n" style="color:#dc2626">A · 素材换人群</div>
+        <h4>基建翻倍 + 换向熟龄女性</h4>
+        <p>视频号版位 CTR 2.56%，落后大盘头客 3.07%（-17%）和南孚 3.25%（-21%）。Q3 目标 <b>3.0%+</b>：核心是<b>素材换向 40+ 熟龄女性人群</b>（女性下单占 74%、40+ 占 87%），学大盘老花镜/艾灸/清洁电器 Top 素材的痛点开场结构。</p>
+      </div>
+      <div class="direction-card" style="border-top-color:#0ea5e9">
+        <div class="n" style="color:#0ea5e9">B · 小店抬量</div>
+        <h4>打开小店天花板</h4>
+        <p>Q2 小店消耗 6.5 万仅为头部 1/10，但 ROI 3.98 全表第一 —— <b>Q3 敢加预算</b>。目标：小店消耗从 6.5 万 → <b>15~20 万</b>（+130~200%）；素材基建 109 → <b>300+ 条</b>（每周新增 30+）；配合下单目标 + 4+M 商品聚合破冷启动。</p>
+      </div>
+      <div class="direction-card" style="border-top-color:#0f766e">
+        <div class="n" style="color:#0f766e">C · 产品能力扩用</div>
+        <h4>潜客优投 + 4+M + 大场速推</h4>
+        <p>Q2 图拉斯已跑通<b>潜客优投</b>（ROI 3.93 · 但用量占比仅 1.75%）和 <b>4+M 微信小店商品</b>（占 82.96% · CVR +26%）—— <b>Q3 关键动作是扩用</b>：潜客优投占比抬到 <b>10~20%</b>、4+M 每 SKU 创意扩至 <b>10~15 条</b>、七夕/双 11 大场当天开启<b>大场速推</b>。</p>
+      </div>
+      <div class="direction-card" style="border-top-color:#f59e0b">
+        <div class="n" style="color:#b45309">D · 节点大场</div>
+        <h4>抓住七夕 + 开学 + 双 11</h4>
+        <p>Q2 高峰单日 2.8 万（5/24）—— Q3 至少要有 <b>3~4 个 &gt; 3 万</b>的大场日。七夕（0815-0822 手机壳礼盒）+ 开学季（0825-0910 换机潮）+ iPhone 18 首发（0910）+ 双 11 蓄水（10 月）= 四个节点串起 Q3 主线。</p>
+      </div>
+    </div>
+
+    <div class="highlight-callout" style="margin-top:14px">
+      <b>🎯 Q3 关键量化目标（建议同步给客户对齐）：</b>
+      <ul class="bullets" style="margin:6px 0 0">
+        <li>整体消耗：67.6 万 → <b>90~110 万</b>（+30~60%）</li>
+        <li>视频号版位 CTR：2.56% → <b>≥ 3.0%</b>（对齐 40+ 女性人群素材）</li>
+        <li>小店消耗：6.5 万 → <b>15~20 万</b>（+130~200%）</li>
+        <li>小店素材基建：109 条 → <b>300+ 条</b>（每周新增 30+）</li>
+        <li>潜客优投占比：1.75% → <b>10~20%</b>（放大已跑通的 ROI 3.93 效果）</li>
+        <li>整体 ROI：稳在 <b>3.0 以上</b>（不追求爆表，追求确定性）</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    图拉斯 · 2026 Q2 复盘 · 腾讯广告数码家电 · 生成时间：2026-07-06
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="./data/tulasi_q2.js"></script>
+<script src="./data/creatives.js"></script>
+<script src="./data/enrich.js"></script>
+<script>
+(function(){
+  const D = window.__DATA__ || {};
+  const fmt = (n, d=2) => (n==null || isNaN(n)) ? '~' : Number(n).toFixed(d);
+  const fmtInt = n => (n==null || isNaN(n)) ? '~' : Math.round(n).toLocaleString();
+  const fmtWan = n => (n/10000).toFixed(2);
+  const shortDate = s => s ? s.slice(5).replace('/','-') : '';
+
+  const RED = '#dc2626';   // ROI 涨红
+  const BLUE = '#2563eb';
+  const ORANGE = '#f97316';
+  const TEAL = '#0f766e';
+  const PURPLE = '#7c3aed';
+
+  // ===== Chart 1: 整体消耗 & ROI =====
+  function drawAll(){
+    const d = D.daily_all || [];
+    const labels = d.map(x => shortDate(x.date));
+    new Chart(document.getElementById('chart_all'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { type:'bar', label:'日消耗(元)', data:d.map(x=>x.cost), backgroundColor:'rgba(37,99,235,.55)', borderColor:BLUE, yAxisID:'y', order:2, borderWidth:0 },
+          { type:'line', label:'下单 ROI', data:d.map(x=>x.roi), borderColor:RED, backgroundColor:RED, yAxisID:'y1', tension:.3, pointRadius:0, borderWidth:2, order:1 }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{ legend:{position:'top',labels:{font:{size:11}}} },
+        scales:{
+          x:{ ticks:{maxRotation:0,autoSkip:true,maxTicksLimit:14,font:{size:10}}, grid:{display:false} },
+          y:{ position:'left', title:{display:true,text:'消耗(元)',font:{size:10}}, ticks:{font:{size:10}} },
+          y1:{ position:'right', title:{display:true,text:'ROI',font:{size:10}}, ticks:{font:{size:10}}, grid:{display:false}, suggestedMin:0, suggestedMax:5 }
+        }
+      }
+    });
+  }
+
+  // 通用: 链路多指标图（消耗 bar，其他指标 line）
+  function drawLinkChart(canvasId, daily){
+    const d = daily || [];
+    const labels = d.map(x => shortDate(x.date));
+    new Chart(document.getElementById(canvasId), {
+      data: {
+        labels,
+        datasets: [
+          { type:'bar', label:'消耗(元)', data:d.map(x=>x.cost), backgroundColor:'rgba(37,99,235,.4)', yAxisID:'y', order:5, borderWidth:0 },
+          { type:'line', label:'ROI', data:d.map(x=>x.roi), borderColor:RED, backgroundColor:RED, yAxisID:'y1', tension:.3, pointRadius:0, borderWidth:2, order:1 },
+          { type:'line', label:'CTR(%)', data:d.map(x=>x.ctr), borderColor:ORANGE, backgroundColor:ORANGE, yAxisID:'y2', tension:.3, pointRadius:0, borderWidth:1.5, order:2 },
+          { type:'line', label:'浅层CVR(%)', data:d.map(x=>x.shallow_cvr), borderColor:TEAL, backgroundColor:TEAL, yAxisID:'y2', tension:.3, pointRadius:0, borderWidth:1.5, order:3 },
+          { type:'line', label:'展开创意(条)', data:d.map(x=>x.creatives), borderColor:PURPLE, backgroundColor:PURPLE, yAxisID:'y3', tension:.3, pointRadius:0, borderWidth:1.2, borderDash:[3,3], order:4 }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{ legend:{position:'top',labels:{font:{size:10},boxWidth:12}} },
+        scales:{
+          x:{ ticks:{maxRotation:0,autoSkip:true,maxTicksLimit:10,font:{size:9}}, grid:{display:false} },
+          y:{ position:'left', title:{display:true,text:'消耗',font:{size:9}}, ticks:{font:{size:9}} },
+          y1:{ position:'right', title:{display:true,text:'ROI',font:{size:9}}, ticks:{font:{size:9}}, grid:{display:false}, suggestedMin:0, suggestedMax:6 },
+          y2:{ display:false, suggestedMin:0, suggestedMax:12 },
+          y3:{ display:false }
+        }
+      }
+    });
+  }
+
+  // ===== Table: 分智投类型 =====
+  function renderZhitouTable(){
+    const rows = [];
+    const ORDER = ['非智投','单链路智投','全域通'];
+    const linkTotals = {
+      '直播': (D.overall_live && D.overall_live.cost) || 0,
+      '小店': (D.overall_shop && D.overall_shop.cost) || 0,
+    };
+    const conclusion = {
+      '直播/非智投': '底盘 · 指标最均衡',
+      '直播/单链路智投': '<b>放量主力</b>（61%），CTR偏低',
+      '直播/全域通': '<span class="up">ROI 稳定器 · 待做大</span>',
+      '小店/非智投': '<span class="up">CTR 4.93% CVR 9.53%</span> · 素材试验田',
+      '小店/单链路智投': '—',
+      '小店/全域通': '<b>小店主力</b>（91%）· 已跑通',
+    };
+    ['直播','小店'].forEach(link=>{
+      const bucket = link==='直播' ? D.live_by_zhitou : D.shop_by_zhitou;
+      const total = linkTotals[link];
+      ORDER.forEach(k=>{
+        const v = bucket && bucket[k];
+        if(!v || !v.cost) return;
+        const share = total ? (v.cost/total*100).toFixed(0)+'%' : '~';
+        const key = link+'/'+k;
+        const isMain = (k==='单链路智投' && link==='直播') || (k==='全域通' && link==='小店');
+        rows.push(`<tr${isMain?' class="hl-row"':''}>
+          <td><b>${link}</b></td>
+          <td>${k}</td>
+          <td class="num">${fmtWan(v.cost)}</td>
+          <td class="num">${share}</td>
+          <td class="num">${fmt(v.roi)}</td>
+          <td class="num">${fmt(v.ctr)}%</td>
+          <td class="num">${fmt(v.shallow_cvr)}%</td>
+          <td class="num">${fmtInt(v.creatives)}</td>
+          <td style="text-align:left;font-size:12px">${conclusion[key]||'—'}</td>
+        </tr>`);
+      });
+    });
+    document.getElementById('tbl_zhitou').innerHTML = rows.join('');
+  }
+
+  // ===== 消耗区间映射（用于同行对比表 · 只写区间不写精确数） =====
+  function costRange(wan){
+    // wan 是"万"单位数值
+    if (wan >= 50) return '50万+';
+    if (wan >= 30) return '30-50万';
+    if (wan >= 20) return '20-30万';
+    if (wan >= 10) return '10-20万';
+    if (wan >= 5)  return '5-10万';
+    if (wan >= 2)  return '2-5万';
+    if (wan >= 1)  return '1-2万';
+    return '<1万';
+  }
+
+  // ===== Table: 同行直播对比 =====
+  // 排除名单：非典型个体户 / 数据聚合异常客户，避免误导对比
+  const PEER_LIVE_EXCLUDE = new Set(['空', '深圳市简韶科技有限公司']);
+  function renderPeersLive(){
+    const rows = [];
+    // 过滤：消耗>=1万 且 排除黑名单
+    const items = (D.peers_live_top||[]).filter(x => x.cost >= 10000 && !PEER_LIVE_EXCLUDE.has(x.brand));
+    items.forEach(p=>{
+      const isTulasi = p.brand === '图拉斯';
+      const brandLabel = p.brand;
+      const wan = p.cost/10000;
+      rows.push(`<tr${isTulasi?' class="hl-row"':''}>
+        <td>${isTulasi?'<b>🎯 图拉斯</b>':brandLabel}</td>
+        <td class="num">${costRange(wan)}</td>
+        <td class="num">${fmt(p.roi)}</td>
+        <td class="num">${fmt(p.ctr)}%</td>
+        <td class="num">${fmt(p.shallow_cvr)}%</td>
+        <td class="num">${fmt(p.live_enter)}%</td>
+        <td class="num">${fmt(p.live_click)}%</td>
+        <td class="num">${fmt(p.live_order)}%</td>
+        <td class="num">${fmtInt(p.creatives)}</td>
+      </tr>`);
+    });
+    document.getElementById('tbl_peers_live').innerHTML = rows.join('');
+  }
+
+  // ===== Table: 视频号大盘 Top10 头客对比（2.3 章）· 日耗区间 =====
+  function renderMarketTopBrand(){
+    const E = window.__ENRICH__; if(!E) return;
+    const box = document.getElementById('tbl_market_top'); if(!box) return;
+    const items = E.market_top10_by_brand || [];
+    const tulasi = E.tulasi_self;
+    const fmtCrv = n => n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString();
+    // 日耗区间映射（万元/天）· 30 天数据 / 30
+    const dailyRange = (cost30d) => {
+      const wanPerDay = cost30d / 30 / 10000;
+      if (wanPerDay >= 50) return '50万+/日';
+      if (wanPerDay >= 20) return '20-50万/日';
+      if (wanPerDay >= 10) return '10-20万/日';
+      if (wanPerDay >= 5)  return '5-10万/日';
+      if (wanPerDay >= 2)  return '2-5万/日';
+      if (wanPerDay >= 1)  return '1-2万/日';
+      if (wanPerDay >= 0.5) return '5千-1万/日';
+      return '<5千/日';
+    };
+    let rows = items.map((p,i)=>{
+      return `<tr>
+        <td class="num">#${i+1}</td>
+        <td>${p.brand}</td>
+        <td class="num">${dailyRange(p.cost)}</td>
+        <td class="num">${fmtCrv(p.creatives)}</td>
+        <td class="num">${fmtInt(p.ads)}</td>
+        <td class="num">${fmtInt(p.accs)}</td>
+        <td class="num">${fmt(p.roi)}</td>
+        <td class="num">${fmt(p.ctr)}%</td>
+      </tr>`;
+    });
+    if(tulasi){
+      rows.push(`<tr class="hl-row">
+        <td class="num"><b>#45</b></td>
+        <td><b>🎯 图拉斯</b></td>
+        <td class="num">${dailyRange(tulasi.cost)}</td>
+        <td class="num down"><b>${fmtCrv(tulasi.creatives)}</b></td>
+        <td class="num">${fmtInt(tulasi.ads)}</td>
+        <td class="num">${fmtInt(tulasi.accs)}</td>
+        <td class="num">${fmt(tulasi.roi)}</td>
+        <td class="num">${fmt(tulasi.ctr)}%</td>
+      </tr>`);
+    }
+    box.innerHTML = rows.join('');
+  }
+
+  // ===== Table: 同行小店对比 =====
+  function renderPeersShop(){
+    const rows = [];
+    // 过滤：消耗>=5000 且 排除"空"（未标注客户）
+    const items = (D.peers_shop_top||[]).filter(x => x.cost >= 5000 && x.brand !== '空');
+    items.forEach(p=>{
+      const isTulasi = p.brand === '图拉斯';
+      const brandLabel = p.brand;
+      const wan = p.cost/10000;
+      rows.push(`<tr${isTulasi?' class="hl-row"':''}>
+        <td>${isTulasi?'<b>🎯 图拉斯</b>':brandLabel}</td>
+        <td class="num">${costRange(wan)}</td>
+        <td class="num">${fmt(p.roi)}</td>
+        <td class="num">${fmt(p.ctr)}%</td>
+        <td class="num">${fmt(p.shallow_cvr)}%</td>
+        <td class="num">${fmtInt(p.creatives)}</td>
+        <td class="num">${fmtInt(p.ads)}</td>
+      </tr>`);
+    });
+    document.getElementById('tbl_peers_shop').innerHTML = rows.join('');
+  }
+
+  // ===== 素材卡片 =====
+  function renderCreatives(){
+    const C = window.__CREATIVES__;
+    if(!C) return;
+    const box = (x, rank) => {
+      const md5 = x.md5 || '';
+      const short = md5 ? md5.slice(0,8) : 'no-md5';
+      const img = md5 ? `./frames/${md5}.jpg` : '';
+      const roiColor = x.roi >= 3.0 ? 'up' : (x.roi < 2.0 ? 'down' : '');
+      const ctrColor = x.ctr >= 3.0 ? 'up' : (x.ctr < 2.0 ? 'down' : '');
+      return `
+        <a href="${x.url||'#'}" target="_blank" style="text-decoration:none;color:inherit;display:block;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(15,23,42,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <div style="position:relative;background:#0f172a;aspect-ratio:9/16;overflow:hidden">
+            ${img ? `<img src="${img}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover">` : ''}
+            <div style="display:${img?'none':'flex'};position:absolute;inset:0;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;flex-direction:column;gap:4px">
+              <span style="font-size:20px">🎬</span>
+              <span>MD5 ${short}</span>
+              <span style="font-size:10px">首帧待抽取</span>
+            </div>
+            <div style="position:absolute;top:6px;left:6px;background:rgba(220,38,38,.9);color:#fff;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700">#${rank}</div>
+            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.75));color:#fff;padding:22px 8px 6px;font-size:11px">
+              <div style="font-weight:700;font-size:14px">¥${(x.cost/10000).toFixed(2)}<span style="font-size:10px;opacity:.75">万</span></div>
+            </div>
+          </div>
+          <div style="padding:8px 10px;font-size:11px;line-height:1.5">
+            <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:10px">
+              <span>${x.product}</span>
+              <span style="font-family:monospace">${short}</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;font-family:monospace;font-size:11px">
+              <span>ROI <b class="${roiColor}">${x.roi.toFixed(2)}</b></span>
+              <span>CTR <b class="${ctrColor}">${x.ctr.toFixed(2)}%</b></span>
+            </div>
+            <div style="display:flex;gap:8px;font-family:monospace;font-size:11px;color:var(--ink-2)">
+              <span>CVR ${x.shallow_cvr.toFixed(2)}%</span>
+              <span>3s ${x.skip3s.toFixed(0)}%</span>
+            </div>
+          </div>
+        </a>
+      `;
+    };
+    const liveBox = document.getElementById('creatives_live');
+    const shopBox = document.getElementById('creatives_shop');
+    if(liveBox && C.live_top) liveBox.innerHTML = C.live_top.map((x,i)=>box(x,i+1)).join('');
+    if(shopBox && C.shop_top) shopBox.innerHTML = C.shop_top.map((x,i)=>box(x,i+1)).join('');
+  }
+
+  // ===== 3.2 优化目标堆叠柱状图（仅"已定义"目标） =====
+  function drawOptChart(){
+    const E = window.__ENRICH__; if(!E) return;
+    const cvs = document.getElementById('chart_opt'); if(!cvs) return;
+    const linkOrder = ['直播','小店'];
+    // 已定义目标合计 = "下单-下单ROI" + "下单"
+    const getPct = (link, name) => {
+      const arr = E.opt_by_link[link] || [];
+      const deep = (arr.find(x => x.name === '下单-下单ROI') || {cost:0}).cost;
+      const shallow = (arr.find(x => x.name === '下单') || {cost:0}).cost;
+      const total = deep + shallow || 1;
+      const target = arr.find(x => x.name === name);
+      return target ? +(target.cost/total*100).toFixed(1) : 0;
+    };
+    new Chart(cvs, {
+      type: 'bar',
+      data: {
+        labels: linkOrder,
+        datasets: [
+          { label:'下单-下单 ROI（深）', data: linkOrder.map(l=>getPct(l,'下单-下单ROI')), backgroundColor:'rgba(220,38,38,.85)' },
+          { label:'下单（浅）', data: linkOrder.map(l=>getPct(l,'下单')), backgroundColor:'rgba(15,118,110,.85)' },
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive:true, maintainAspectRatio:false,
+        plugins: {
+          legend:{position:'top',labels:{font:{size:10},boxWidth:12}},
+          tooltip:{callbacks:{label:(c)=>`${c.dataset.label}: ${c.parsed.x.toFixed(1)}%`}}
+        },
+        scales:{
+          x:{ stacked:true, max:100, ticks:{callback:v=>v+'%',font:{size:10}} },
+          y:{ stacked:true, ticks:{font:{size:11}} }
+        }
+      }
+    });
+  }
+
+  // ===== 3.6 CTR 对标图（头客 vs 图拉斯 vs 同行南孚） =====
+  function drawCtrChart(){
+    const cvs = document.getElementById('chart_ctr'); if(!cvs) return;
+    new Chart(cvs, {
+      type: 'bar',
+      data: {
+        labels: ['图拉斯（视频号直播）','大盘头客（Top20 加权）','头部素材（Top20 加权）','同行南孚（直播链路）'],
+        datasets: [{
+          label: 'CTR(%)',
+          data: [2.56, 3.07, 3.15, 3.25],
+          backgroundColor: ['rgba(37,99,235,.85)','rgba(245,158,11,.85)','rgba(15,118,110,.85)','rgba(220,38,38,.85)'],
+        }]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false},
+          tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(2)}%`}} },
+        scales:{
+          x:{ ticks:{font:{size:10}} },
+          y:{ beginAtZero:true, title:{display:true,text:'CTR(%)',font:{size:10}}, ticks:{callback:v=>v+'%',font:{size:10}} }
+        }
+      }
+    });
+  }
+
+  // ===== 3.4 性别饼图 =====
+  function drawGenderChart(){
+    const E = window.__ENRICH__; if(!E) return;
+    const cvs = document.getElementById('chart_gender'); if(!cvs) return;
+    const data = E.gender || [];
+    // 排序：女、未知、男
+    const order = ['女','未知','男'];
+    const sorted = order.map(n => data.find(x=>x.name===n)).filter(Boolean);
+    new Chart(cvs, {
+      type: 'doughnut',
+      data: {
+        labels: sorted.map(x=>x.name),
+        datasets: [{
+          data: sorted.map(x=>+x.pct.toFixed(1)),
+          backgroundColor: ['rgba(220,38,38,.85)','rgba(100,116,139,.55)','rgba(37,99,235,.85)']
+        }]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false, cutout:'55%',
+        plugins:{
+          legend:{position:'right',labels:{font:{size:11}}},
+          tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed.toFixed(1)}%`}}
+        }
+      }
+    });
+  }
+
+  // ===== 3.4 年龄柱状图 =====
+  function drawAgeChart(){
+    const E = window.__ENRICH__; if(!E) return;
+    const cvs = document.getElementById('chart_age'); if(!cvs) return;
+    const arr = (E.age || []).filter(x => x.name !== '0-13' && x.pct > 0.05);
+    const bg = arr.map(x => {
+      const n = x.name;
+      // 40-54 用红色高亮
+      if (['40-44','45-49','50-54'].includes(n)) return 'rgba(220,38,38,.85)';
+      if (['55-59','60-64','65+'].includes(n)) return 'rgba(245,158,11,.75)';
+      return 'rgba(100,116,139,.55)';
+    });
+    new Chart(cvs, {
+      type: 'bar',
+      data: {
+        labels: arr.map(x=>x.name),
+        datasets: [{
+          label: '消耗占比(%)',
+          data: arr.map(x=>+x.pct.toFixed(2)),
+          backgroundColor: bg,
+        }]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false},
+          tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(2)}%`}} },
+        scales:{
+          x:{ ticks:{font:{size:10}} },
+          y:{ beginAtZero:true, title:{display:true,text:'占比(%)',font:{size:10}}, ticks:{callback:v=>v+'%',font:{size:10}} }
+        }
+      }
+    });
+  }
+
+  // ===== 3.5 大盘 Top 素材卡片 =====
+  function renderMarketTop(){
+    const E = window.__ENRICH__; if(!E) return;
+    const box = document.getElementById('market_top_grid'); if(!box) return;
+    const items = (E.market_top || []).slice(0, 10);
+    const html = items.map((x,i)=>{
+      const md5 = x.md5 || '';
+      const short = md5.slice(0,8);
+      const img = md5 ? `./market_frames/${md5}.jpg` : '';
+      const roiColor = x.roi >= 3.0 ? 'up' : (x.roi < 2.0 ? 'down' : '');
+      const ctrColor = x.ctr >= 3.0 ? 'up' : (x.ctr < 2.0 ? 'down' : '');
+      return `
+        <a href="${x.url||'#'}" target="_blank" style="text-decoration:none;color:inherit;display:block;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(15,23,42,.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <div style="position:relative;background:#0f172a;aspect-ratio:9/16;overflow:hidden">
+            ${img ? `<img src="${img}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover">` : ''}
+            <div style="display:${img?'none':'flex'};position:absolute;inset:0;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;flex-direction:column;gap:4px">
+              <span style="font-size:20px">🎬</span>
+              <span>MD5 ${short}</span>
+            </div>
+            <div style="position:absolute;top:6px;left:6px;background:rgba(245,158,11,.92);color:#fff;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700">大盘 #${i+1}</div>
+            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.75));color:#fff;padding:22px 8px 6px;font-size:11px">
+              <div style="font-weight:700;font-size:13px">¥${(x.cost/10000).toFixed(1)}<span style="font-size:10px;opacity:.75">万</span></div>
+            </div>
+          </div>
+          <div style="padding:8px 10px;font-size:11px;line-height:1.5">
+            <div style="color:var(--muted);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.account}</div>
+            <div style="color:var(--ink-2);font-size:11px;font-weight:600;margin-top:2px">${x.product||'—'}</div>
+            <div style="display:flex;gap:8px;margin-top:4px;font-family:monospace;font-size:11px">
+              <span>ROI <b class="${roiColor}">${x.roi.toFixed(2)}</b></span>
+              <span>CTR <b class="${ctrColor}">${x.ctr.toFixed(2)}%</b></span>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+    box.innerHTML = html;
+  }
+
+  // 全部初始化
+  function init(){
+    if(!D || !D.daily_all){
+      console.error('数据未加载');
+      return;
+    }
+    drawAll();
+    drawLinkChart('chart_live', D.daily_live);
+    drawLinkChart('chart_shop', D.daily_shop);
+    renderZhitouTable();
+    renderPeersLive();
+    renderPeersShop();
+    renderMarketTopBrand();
+    renderCreatives();
+    // 新增
+    drawOptChart();
+    drawCtrChart();
+    drawGenderChart();
+    drawAgeChart();
+    renderMarketTop();
+  }
+  if(document.readyState !== 'loading') init();
+  else document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
